@@ -41,7 +41,7 @@ const Navbar = () => {
 
   <div className="dropdown dropdown-end">
   <div tabIndex={0} role="button" className="m-1">
-    <div className="avatar">
+    <div className="avatar cursor-pointer">
     <div className="w-12 h-12 rounded-full">
       <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
     </div>
@@ -49,8 +49,10 @@ const Navbar = () => {
 
   </div>
   <ul tabIndex="-1" className="dropdown-content mt-3 menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-    <li><a>Item 1</a></li>
-    <li><a>Item 2</a></li>
+    <li><Link>My Profile</Link></li>
+    <li><Link to="/dashboard">Dashboard</Link></li>
+    <li><button className='btn'>LogOut</button></li>
+   
   </ul>
 </div>
 
