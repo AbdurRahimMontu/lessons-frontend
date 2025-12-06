@@ -1,12 +1,13 @@
-import React, { use } from 'react';
+
 import Container from '../Components/Container';
 import { Link, NavLink } from 'react-router';
 import MyLink from '../Components/MyLink';
-import AuthContext from '../Provider/AuthContext';
+
 
 const Navbar = () => {
-    const {name} = use(AuthContext)
-    console.log(name);
+   
+
+
     const links = <>
          <li><MyLink>Home</MyLink></li>
          <li><MyLink>Public Lessons</MyLink></li>

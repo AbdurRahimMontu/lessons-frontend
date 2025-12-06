@@ -1,29 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import { useForm } from "react-hook-form"
+import useAuth from '../Hooks/useAuth';
 const Signup = () => {
-    return (
-         <div className='flex justify-center items-center min-h-screen'>
+const {register,handleSubmit,formState: { errors }} = useForm()
+ const {createNewUser} = useAuth();
+ const onSubmit = (data) => {
    
+    console.log(createNewUser);
+    console.log(data)
 
+     createNewUser(data.email, data.password)
+    .then((result) => {
+      console.log("User created:", result);
+    })
+    .catch((error) => {
+      console.error("Error:", error.message);
+    });
+
+ }
+    return (
+    <div className='flex justify-center items-center min-h-screen'>
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-      <div className="card-body">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-body">
          <h1 className="text-3xl text-center font-bold">Signup</h1>
         <fieldset className="fieldset">
+            {/* Name */}
           <label className="label">Name</label>
-          <input type="email" className="input" placeholder="Your Name" />
+          <input type="text" {...register("name",{ required: true })} className="input" placeholder="Your Name" />
+          {/* Photo */}
           <label className="label">Photo</label>
-         <input type="file" className="file-input" placeholder="Email" />
+         <input type="file" {...register("photo")} className="file-input" placeholder="Email" />
+         {/* Email */}
           <label className="label">Email</label>
-          <input type="email" className="input" placeholder="Email" />
+          <input type="email" {...register("email", { required: true })} className="input" placeholder="Email" />
+ {errors.email && <span className='text-red-600'>Email Address is required</span>}
+
+          {/* Password */}
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" />
+          <input type="password" {...register("password",{ required: true,minLength: {value: 6 }, pattern: {
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/,
+      message: "Must include uppercase, lowercase, number & special character"
+    }})} className="input" placeholder="Password" />
+           {errors.password && <span className='text-red-600'>Password must be 6 character</span>}
+           {errors.password && <span className='text-red-600'>Must include one uppercase, one lowercase, one number & one special character</span>}
+
           <div><a className="link link-hover">Forgot password?</a></div>
           <button className="btn btn-neutral mt-4">Signup</button>
         </fieldset>
         <h2>Already have no Account <Link className='text-blue-700 font-bold border-b-2' to="/login">Login</Link> </h2>
 
-  </div>
+
+  </form>
 </div>
         </div>
     );
