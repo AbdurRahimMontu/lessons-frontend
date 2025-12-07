@@ -1,157 +1,213 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import Navbar from "../Shared/Navbar";
+import useAuth from "../Hooks/useAuth";
+import Swal from "sweetalert2";
 
-const MyLessonsTable = () => {
+const MyLessons = () => {
   const [lessons, setLessons] = useState([]);
-
+const {user} = useAuth()
+  // Fetch lessons by email
   useEffect(() => {
-    fetch("/api/lessons/me")
+    if (!user?.email) return;
+
+    fetch(`http://localhost:3000/myLessons?email=${user.email}`)
       .then(res => res.json())
-      .then(data => setLessons(data));
-  }, []);
+      .then(data => {
+        console.log("Fetched lessons:", data);
+        setLessons(data);
+      })
+      .catch(err => console.error("Fetch error:", err));
+  }, [user?.email]);
 
+  // Update visibility
   const handleVisibilityChange = async (id, value) => {
-    await fetch(`/api/lessons/${id}`, {
+    await fetch(`http://localhost:3000/lessons/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ visibility: value }),
+      body: JSON.stringify({ privacy: value }),
     });
+
+    setLessons(prev =>
+      prev.map(item => (item._id === id ? { ...item, privacy: value } : item))
+    );
   };
 
+  // Update access level
   const handleAccessChange = async (id, value) => {
-    await fetch(`/api/lessons/${id}`, {
+    await fetch(`http://localhost:3000/lessons/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ access: value }),
+      body: JSON.stringify({ accessLevel: value }),
     });
+
+    setLessons(prev =>
+      prev.map(item => (item._id === id ? { ...item, accessLevel: value } : item))
+    );
   };
 
+  // Delete lesson
   const handleDelete = async (id) => {
-    const confirmDelete = confirm("Are you sure? This cannot be undone.");
-    if (!confirmDelete) return;
+  const confirmDelete = await Swal.fire({
+    title: "Are you sure?",
+    text: "This action cannot be undone!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  });
 
-    await fetch(`/api/lessons/${id}`, { method: "DELETE" });
+  if (!confirmDelete.isConfirmed) return;
 
-    setLessons(lessons.filter(item => item._id !== id));
-  };
+  // Delete from database
+  await fetch(`http://localhost:3000/lessons/${id}`, {
+    method: "DELETE",
+  });
+
+  // Remove from UI
+  setLessons((prev) => prev.filter((item) => item._id !== id));
+
+  // Success alert
+  Swal.fire({
+    title: "Deleted!",
+    text: "Your lesson has been removed.",
+    icon: "success",
+    timer: 1500,
+    showConfirmButton: false,
+  });
+};
 
   return (
- <div>
-    <Navbar></Navbar>
-       <div className="overflow-x-auto p-4">
-      <table className="table w-full">
-        {/* head */}
-        <thead>
-          <tr className="bg-base-200">
-            <th>Lesson</th>
-            <th>Category</th>
-            <th>Tone</th>
-            <th>Visibility</th>
-            <th>Access</th>
-            <th>Stats</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+    <div>
+      <Navbar />
 
-        <tbody>
-          {lessons.map(lesson => (
-            <tr key={lesson._id}>
-              {/* Lesson Info */}
-              <td>
-                <div className="flex items-center gap-3">
-                  <div className="mask mask-squircle w-12 h-12">
-                    <img src={lesson.image} alt="lesson" />
-                  </div>
-                  <div>
-                    <div className="font-bold">{lesson.title}</div>
-                    <div className="text-sm opacity-70">
-                      {lesson.shortDescription?.slice(0, 60)}...
+      <div className="overflow-x-auto p-4">
+        <h2 className="text-2xl font-semibold mb-4">
+          My Lessons ({lessons.length})
+        </h2>
+
+        <table className="table w-full">
+          <thead>
+            <tr className="bg-base-200">
+              <th>Lesson</th>
+              <th>Category</th>
+              <th>Tone</th>
+              <th>Email</th>
+              <th>Visibility</th>
+              <th>Access</th>
+              <th>Stats</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {lessons.map(lesson => (
+              <tr key={lesson._id}>
+                
+                {/* LESSON INFO */}
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="mask mask-squircle w-12 h-12">
+                      <img
+                        src={lesson.image || "https://via.placeholder.com/100"}
+                        alt="lesson"
+                      />
+                    </div>
+                    <div>
+                      <div className="font-bold">{lesson.title}</div>
+                      <div className="text-sm opacity-70">
+                        {lesson.shortDescription?.slice(0, 60)}...
+                      </div>
                     </div>
                   </div>
-                </div>
-              </td>
+                </td>
 
-              {/* Category */}
-              <td>{lesson.category}</td>
+                <td>{lesson.category}</td>
+                <td>{lesson.emotionalTone}</td>
 
-              {/* Emotional Tone */}
-              <td>{lesson.emotionalTone}</td>
+                {/* EMAIL SHOW HERE */}
+                <td className="font-semibold text-blue-600">{lesson.email}</td>
 
-              {/* Visibility Toggle */}
-              <td>
-                <input
-                  type="checkbox"
-                  className="toggle toggle-info"
-                  checked={lesson.visibility === "public"}
-                  onChange={(e) =>
-                    handleVisibilityChange(
-                      lesson._id,
-                      e.target.checked ? "public" : "private"
-                    )
-                  }
-                />
-                <span className="ml-2 text-sm">
-                  {lesson.visibility === "public" ? "Public" : "Private"}
-                </span>
-              </td>
+                {/* VISIBILITY */}
+                <td>
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-info"
+                    checked={lesson.privacy === "public"}
+                    onChange={(e) =>
+                      handleVisibilityChange(
+                        lesson._id,
+                        e.target.checked ? "public" : "private"
+                      )
+                    }
+                  />
+                  <span className="ml-2 text-sm">
+                    {lesson.privacy === "public" ? "Public" : "Private"}
+                  </span>
+                </td>
 
-              {/* Access Level */}
-              <td>
-                <select
-                  className="select select-bordered select-sm"
-                  value={lesson.access}
-                  onChange={(e) =>
-                    handleAccessChange(lesson._id, e.target.value)
-                  }
-                >
-                  <option value="free">Free</option>
-                  <option value="premium">Premium</option>
-                </select>
-              </td>
-
-              {/* Stats */}
-              <td>
-                <div className="text-sm">
-                  <p>❤️ {lesson.reactionsCount}</p>
-                  <p>⭐ {lesson.favoritesCount}</p>
-                  <p className="opacity-60 text-xs">
-                    {new Date(lesson.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-              </td>
-
-              {/* Actions */}
-              <td>
-                <div className="flex items-center gap-3">
-                  <Link to={`/lesson/${lesson._id}`} className="btn btn-info btn-xs">
-                    <FaEye />
-                  </Link>
-
-                  <Link
-                    to={`/dashboard/my-lessons/update/${lesson._id}`}
-                    className="btn btn-warning btn-xs"
+                {/* ACCESS */}
+                <td>
+                  <select
+                    className="select select-bordered select-sm"
+                    value={lesson.accessLevel}
+                    onChange={(e) =>
+                      handleAccessChange(lesson._id, e.target.value)
+                    }
                   >
-                    <FaEdit />
-                  </Link>
+                    <option value="free">Free</option>
+                    <option value="premium">Premium</option>
+                  </select>
+                </td>
 
-                  <button
-                    onClick={() => handleDelete(lesson._id)}
-                    className="btn btn-error btn-xs"
-                  >
-                    <FaTrash />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+                {/* STATS */}
+                <td>
+                  <div className="text-sm">
+                    <p>❤️ {lesson.reactionsCount || 0}</p>
+                    <p>⭐ {lesson.favoritesCount || 0}</p>
+                    <p className="opacity-60 text-xs">
+                      {new Date(lesson.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                </td>
 
-      </table>
+                {/* ACTIONS */}
+                <td>
+                  <div className="flex items-center gap-3">
+                    <Link
+                      to={`/lesson/${lesson._id}`}
+                      className="btn btn-info btn-xs"
+                    >
+                      <FaEye />
+                    </Link>
+
+                    <Link
+                      to={`/dashboard/my-lessons/update/${lesson._id}`}
+                      className="btn btn-warning btn-xs"
+                    >
+                      <FaEdit />
+                    </Link>
+
+                    <button
+                      onClick={() => handleDelete(lesson._id)}
+                      className="btn btn-error btn-xs"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </td>
+
+              </tr>
+            ))}
+          </tbody>
+
+        </table>
+      </div>
     </div>
- </div>
   );
 };
 
-export default MyLessonsTable;
+export default MyLessons;
+
+

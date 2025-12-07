@@ -1,91 +1,144 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-// import useAuth from './../Hooks/useAuth';
-import Navbar from './../Shared/Navbar';
+import Navbar from "./../Shared/Navbar";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import useAuth from "../Hooks/useAuth"; // <-- Make sure this exists
 
 const AddLesson = () => {
-//   const { user } = useAuth();
-// const isPremiumUser = user?.isPremium;
-const isPremiumUser =true;
-// const isPremiumUser = false;
-  const {
-    register,
-    handleSubmit,
-   reset
-  } = useForm();
+  const { user } = useAuth(); // LOGGED-IN USER
+  const axiosSecure = useAxiosSecure();
 
-  const handleSignup = (data) => {
-    console.log(data);
-     reset(); 
+  const isPremiumUser = true;
+
+  const { register, handleSubmit, reset } = useForm();
+
+  // -----------------------------
+  // CREATE LESSON FUNCTION
+  // -----------------------------
+  const handleCreateAddProduct = (data) => {
+    // Attach user email
+    data.email = user?.email;
+    data.creatorName = user?.displayName;
+    data.creatorPhoto = user?.photoURL;
+
+    axiosSecure
+      .post("/allLessons", data)
+      .then((res) => {
+        console.log(res.data);
+
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your lesson has been created",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          reset();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Something went wrong!",
+          text: "Unable to create lesson.",
+        });
+      });
   };
+
   return (
     <div>
-     <Navbar></Navbar>
+      <Navbar />
+
       <div className="flex justify-center pt-5">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <form onSubmit={handleSubmit(handleSignup)} className="card-body">
-             <h2 className="text-2xl font-bold text-center pt-4">Add New Lesson</h2>
+          <form
+            onSubmit={handleSubmit(handleCreateAddProduct)}
+            className="card-body"
+          >
+            <h2 className="text-2xl font-bold text-center pt-4">
+              Add New Lesson
+            </h2>
+
             <fieldset className="fieldset">
-              {/* Name */}
+              {/* Title */}
               <label className="label">Title</label>
               <input
                 type="text"
-                {...register("title", { required: "Name is required" })}
+                {...register("title", { required: true })}
                 className="input"
-                defaultValue="Lesson Title"
+                placeholder="Lesson Title"
               />
-                 {/* Name */}
+
+              {/* Full Description */}
               <label className="label">Description</label>
-              <input
-                type="text"
-                {...register("description", { required: "Name is required" })}
-                className="input"
-                defaultValue="Full Description / Story / Insight"
-              />
-                 {/* Name */}
-<label className="label">Category</label>
-<select {...register("category", { required: "Name is required" })}  defaultValue="Pick a Category" className="select  ">
-  <option disabled={true}>Pick a Category</option>
-  <option>Personal Growth</option>
-  <option>Career</option>
-  <option>Relationships</option>
-  <option>Mindset</option>
-  <option>Mistakes Learned</option>
-</select>
-   {/* Name */}
-<label className="label">Emotional Tone</label>
-<select {...register("emotionalTone", { required: "Name is required" })} defaultValue="Pick a Emotional Tone" className="select ">
-  <option disabled={true}>Pick a Emotional Tone</option>
-  <option>Motivational</option>
-  <option>Sad</option>
-  <option>Realization</option>
-  <option>Gratitude</option>
+              <textarea
+                {...register("description", { required: true })}
+                className="textarea textarea-bordered"
+                placeholder="Full Description / Story / Insight"
+              ></textarea>
 
-</select>
-{/* Name */}
-<label className="label">Privacy</label>
-<select {...register("privacy", { required: "Name is required" })} defaultValue="Privacy" className="select ">
-  <option disabled={true}>Privacy</option>
-  <option>Public</option>
-  <option>Private</option>
-</select>
-{/* Name */}
-<label className="label">Access Level</label>
-<div
-  className={!isPremiumUser ? "tooltip tooltip-right" : ""}
-  data-tip={!isPremiumUser ? "Upgrade to Premium to create paid lessons" : ""}
->
-  <select
-    disabled={!isPremiumUser}
-    className="select select-bordered"
-    {...register("accessLevel")}
-  >
-    <option value="free">Free</option>
-    <option value="premium">Premium</option>
-  </select>
-</div>
-{/* Name */}
+              {/* Category */}
+              <label className="label">Category</label>
+              <select
+                {...register("category", { required: true })}
+                className="select select-bordered"
+              >
+                <option value="">Pick a Category</option>
+                <option>Personal Growth</option>
+                <option>Career</option>
+                <option>Relationships</option>
+                <option>Mindset</option>
+                <option>Mistakes Learned</option>
+              </select>
 
+              {/* Emotional Tone */}
+              <label className="label">Emotional Tone</label>
+              <select
+                {...register("emotionalTone", { required: true })}
+                className="select select-bordered"
+              >
+                <option value="">Pick a Tone</option>
+                <option>Motivational</option>
+                <option>Sad</option>
+                <option>Realization</option>
+                <option>Gratitude</option>
+              </select>
+
+              {/* Privacy */}
+              <label className="label">Privacy</label>
+              <select
+                {...register("privacy", { required: true })}
+                className="select select-bordered"
+              >
+                <option value="">Privacy</option>
+                <option>Public</option>
+                <option>Private</option>
+              </select>
+
+              {/* Access Level */}
+              <label className="label">Access Level</label>
+              <div
+                className={!isPremiumUser ? "tooltip tooltip-right" : ""}
+                data-tip={
+                  !isPremiumUser
+                    ? "Upgrade to Premium to create paid lessons"
+                    : ""
+                }
+              >
+                <select
+                  disabled={!isPremiumUser}
+                  className="select select-bordered"
+                  {...register("accessLevel")}
+                >
+                  <option value="free">Free</option>
+                  <option value="premium">Premium</option>
+                </select>
+              </div>
 
               <button className="btn btn-neutral mt-4">Add Lesson</button>
             </fieldset>
@@ -97,3 +150,4 @@ const isPremiumUser =true;
 };
 
 export default AddLesson;
+

@@ -1,11 +1,14 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAuth from "../Hooks/useAuth";
+import MyAnimation from "../Components/MyAnimation";
 
 const Login = () => {
   const {register,handleSubmit,formState: { errors }} = useForm();
-  const { signInUser } = useAuth();
+    const navigate = useNavigate()
+  const location = useLocation()
+  const { signInUser,setUser, googleSignIn } = useAuth();
   const handleLogin = (data) => {
     signInUser(data.email, data.password)
       .then((result) => {
@@ -15,7 +18,17 @@ const Login = () => {
         console.error(error.message);
       });
   };
+   const handleGoogleSignIn = (data) => {
+   
+    googleSignIn()
+    const currentUser = data.user
+    setUser(currentUser)
+    navigate(location.state || "/")
+  };
+
   return (
+    <div className="grid  items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">
+
     <div className="flex justify-center items-center min-h-screen">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <form onSubmit={handleSubmit(handleLogin)} className="card-body">
@@ -61,6 +74,7 @@ const Login = () => {
               <a className="link link-hover">Forgot password?</a>
             </div>
             <button className="btn btn-neutral mt-4">Login</button>
+            <button onClick={handleGoogleSignIn} className="btn btn-neutral mt-4">Google with Login</button>
           </fieldset>
           <h2>
             You have no Account{" "}
@@ -70,6 +84,10 @@ const Login = () => {
           </h2>
         </form>
       </div>
+    </div>
+      <div className="flex justify-center items-center min-h-screen">
+    <MyAnimation></MyAnimation>
+  </div>
     </div>
   );
 };

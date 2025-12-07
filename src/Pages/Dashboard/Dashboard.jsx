@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import useAuth from '../../Hooks/useAuth';
 
 const Dashboard = () => {
+   const [lessons, setLessons] = useState([]);
+   const { user } = useAuth();  
+const [favoriteCount, setFavoriteCount] = useState(0);
+
+useEffect(() => {
+  if (!user?.email) return;
+
+  fetch(`http://localhost:3000/favorites/count/${user.email}`)
+    .then(res => res.json())
+    .then(data => setFavoriteCount(data.count))
+    .catch(err => console.error(err));
+}, [user]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/allLessons") // change to your API route
+      .then(res => res.json())
+      .then(data => setLessons(data))
+      .catch(err => console.error(err));
+  }, []);
     return (
         <div>
             <div className="drawer lg:drawer-open">
@@ -22,12 +42,12 @@ const Dashboard = () => {
 
         <div className="p-6 bg-white shadow rounded-xl">
           <h2 className="text-lg font-semibold">Total Lessons Created</h2>
-          <p className="text-3xl font-bold mt-2">12</p>
+          <p className="text-3xl font-bold mt-2">{lessons.length}</p>
         </div>
 
         <div className="p-6 bg-white shadow rounded-xl">
           <h2 className="text-lg font-semibold">Total Favorites Saved</h2>
-          <p className="text-3xl font-bold mt-2">8</p>
+          <p className="text-3xl font-bold mt-2">{favoriteCount}</p>
         </div>
 
         <div className="p-6 bg-white shadow rounded-xl">

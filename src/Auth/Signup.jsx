@@ -2,9 +2,10 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAuth from './../Hooks/useAuth';
+import MyAnimation from './../Components/MyAnimation';
 
 const Signup = () => {
-  const {createNewUser} = useAuth();
+  const {createNewUser,setUser, googleSignIn} = useAuth();
   const navigate = useNavigate()
   const location = useLocation()
   const {
@@ -18,9 +19,18 @@ const Signup = () => {
     createNewUser(data.email, data.password)
     navigate(location.state || "/")
   };
+  const handleGoogleSignIn = (data) => {
+   
+    googleSignIn()
+    const currentUser = data.user
+    setUser(currentUser)
+    navigate(location.state || "/")
+  };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+<div className="grid  items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">
+
+      <div className="flex justify-center items-center min-h-screen">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <form onSubmit={handleSubmit(handleSignup)} className="card-body">
           <h1 className="text-3xl text-center font-bold">Signup</h1>
@@ -91,6 +101,12 @@ const Signup = () => {
             >
               Signup
             </button>
+            <button onClick={handleGoogleSignIn} type="button"
+        
+              className="btn btn-neutral mt-4"
+            >
+              Login with Google
+            </button>
           </fieldset>
           <h2>
             Already have no Account{" "}
@@ -101,6 +117,10 @@ const Signup = () => {
         </form>
       </div>
     </div>
+      <div className="flex justify-center items-center min-h-screen">
+    <MyAnimation></MyAnimation>
+  </div>
+</div>
   );
 };
 

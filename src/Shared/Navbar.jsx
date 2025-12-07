@@ -21,8 +21,18 @@ const handleLogOut=()=>{
          <li><MyLink to="/publicLessons">Public Lessons</MyLink></li>
          <li><MyLink to="/dashboard/add-lesson" >Add Lesson</MyLink></li>
          <li><MyLink to="/dashboard/my-lessons">My Lessons</MyLink></li>
-         <li><MyLink to="/pricing">Pricing</MyLink></li>
+       
       
+
+{user && !user.isPremium && (
+    <li><MyLink to="/pricing">Pricing</MyLink></li>
+)}
+
+{user && user.isPremium && (
+  <span className="px-3 py-1 bg-yellow-300 text-black rounded-full text-sm ml-2">
+    ⭐ Premium
+  </span>
+)}
     </>
     return (
         <div className='bg-base-100 shadow-sm'>
