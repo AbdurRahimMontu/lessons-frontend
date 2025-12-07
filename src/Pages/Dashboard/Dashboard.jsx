@@ -16,7 +16,87 @@ const Dashboard = () => {
       <div className="px-4">Navbar Title</div>
     </nav>
     {/* Page content here */}
-    <div className="p-4">Page Content</div>
+    {/* <div className="p-4">Page Content</div> */}
+   {/* Top Stats Row */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <div className="p-6 bg-white shadow rounded-xl">
+          <h2 className="text-lg font-semibold">Total Lessons Created</h2>
+          <p className="text-3xl font-bold mt-2">12</p>
+        </div>
+
+        <div className="p-6 bg-white shadow rounded-xl">
+          <h2 className="text-lg font-semibold">Total Favorites Saved</h2>
+          <p className="text-3xl font-bold mt-2">8</p>
+        </div>
+
+        <div className="p-6 bg-white shadow rounded-xl">
+          <h2 className="text-lg font-semibold">Weekly Contributions</h2>
+          <p className="text-3xl font-bold mt-2">5</p>
+        </div>
+
+        <div className="p-6 bg-white shadow rounded-xl">
+          <h2 className="text-lg font-semibold">Monthly Reflections</h2>
+          <p className="text-3xl font-bold mt-2">18</p>
+        </div>
+
+      </div>
+
+      {/* Recently Added Lessons */}
+      <div className="bg-white shadow rounded-xl p-6">
+        <h2 className="text-xl font-semibold mb-4">Recently Added Lessons</h2>
+
+        <div className="space-y-3">
+          <div className="p-4 border rounded-lg">
+            <p className="font-medium">🌱 Personal Growth: How I Learned to Stay Calm</p>
+            <span className="text-sm text-gray-500">2 days ago</span>
+          </div>
+
+          <div className="p-4 border rounded-lg">
+            <p className="font-medium">💡 Mindset Shift: Stop Comparing Yourself</p>
+            <span className="text-sm text-gray-500">5 days ago</span>
+          </div>
+
+          <div className="p-4 border rounded-lg">
+            <p className="font-medium">🔥 Career: Importance of Showing Progress</p>
+            <span className="text-sm text-gray-500">1 week ago</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Shortcuts */}
+      <div className="bg-white shadow rounded-xl p-6">
+        <h2 className="text-xl font-semibold mb-4">Quick Shortcuts</h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Link to="/dashboard/add-lesson" className="p-4 bg-blue-100 text-center rounded-lg hover:bg-blue-200">
+            ➕ Add New Lesson
+          </Link>
+
+          <Link to="/dashboard/my-lessons" className="p-4 bg-green-100 text-center rounded-lg hover:bg-green-200">
+            📚 My Lessons
+          </Link>
+
+          <Link to="/dashboard/my-favorites" className="p-4 bg-amber-100 text-center rounded-lg hover:bg-amber-200">
+            ⭐ Favorites
+          </Link>
+
+          <Link to="/dashboard/profile" className="p-4 bg-purple-100 text-center rounded-lg hover:bg-purple-200">
+            👤 Edit Profile
+          </Link>
+        </div>
+      </div>
+
+      {/* Mini Analytics Placeholder */}
+      <div className="bg-white shadow rounded-xl p-6">
+        <h2 className="text-xl font-semibold mb-4">
+          Analytics (Weekly or Monthly Contributions)
+        </h2>
+
+        <div className="h-40 bg-gray-100 rounded-lg flex items-center justify-center">
+          <span className="text-gray-500">[Chart Placeholder]</span>
+        </div>
+      </div>
   </div>
 
   <div className="drawer-side is-drawer-close:overflow-visible">
@@ -32,7 +112,9 @@ const Dashboard = () => {
             <span className="is-drawer-close:hidden">Homepage</span>
           </Link>
         </li>
-
+             <li className='pt-4'>
+              <h2>Statics</h2>
+             </li>
         {/* List item */}
         <li>
           <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">

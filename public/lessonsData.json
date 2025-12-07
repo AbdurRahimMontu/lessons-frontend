@@ -1,0 +1,142 @@
+[
+  {
+    "title": "Believe in Small Progress",
+    "description": "Every major transformation begins with the tiny steps you take every day. Consistency builds confidence.",
+    "category": "Personal Growth",
+    "emotionalTone": "Motivational",
+    "image": "",
+    "privacy": "public",
+    "accessLevel": "free",
+    "creator": {
+      "name": "John Doe",
+      "photo": "https://example.com/user1.jpg"
+    },
+    "createdAt": "2025-01-01T10:00:00Z"
+  },
+  {
+    "title": "Failures Are Hidden Lessons",
+    "description": "Each failure leaves behind a message. If you listen carefully, you grow faster than ever before.",
+    "category": "Mindset",
+    "emotionalTone": "Realization",
+    "image": "",
+    "privacy": "private",
+    "accessLevel": "premium",
+    "creator": {
+      "name": "Sarah Ahmed",
+      "photo": "https://example.com/user2.jpg"
+    },
+    "createdAt": "2025-01-03T12:30:00Z"
+  },
+  {
+    "title": "Career Success Comes From Discipline",
+    "description": "Talent helps you start, but discipline keeps you going. Show up even when you don’t feel like it.",
+    "category": "Career",
+    "emotionalTone": "Motivational",
+    "image": "",
+    "privacy": "public",
+    "accessLevel": "free",
+    "creator": {
+      "name": "Michael Khan",
+      "photo": "https://example.com/user3.jpg"
+    },
+    "createdAt": "2025-01-04T09:15:00Z"
+  },
+  {
+    "title": "People Change, And That’s Okay",
+    "description": "Not all relationships last forever. Growth sometimes leads to distance, and that's part of life.",
+    "category": "Relationships",
+    "emotionalTone": "Sad",
+    "image": "",
+    "privacy": "private",
+    "accessLevel": "premium",
+    "creator": {
+      "name": "Ayesha Noor",
+      "photo": "https://example.com/user4.jpg"
+    },
+    "createdAt": "2025-01-05T16:45:00Z"
+  },
+  {
+    "title": "Gratitude Makes Life Easier",
+    "description": "Focusing on what you have instead of what you lack changes your entire emotional energy.",
+    "category": "Mindset",
+    "emotionalTone": "Gratitude",
+    "image": "",
+    "privacy": "public",
+    "accessLevel": "free",
+    "creator": {
+      "name": "Emily Lee",
+      "photo": "https://example.com/user5.jpg"
+    },
+    "createdAt": "2025-01-07T14:22:00Z"
+  },
+  {
+    "title": "Learn to Let Go",
+    "description": "Holding on to things that hurt you only slows down your healing. Release to grow.",
+    "category": "Personal Growth",
+    "emotionalTone": "Realization",
+    "image": "",
+    "privacy": "private",
+    "accessLevel": "premium",
+    "creator": {
+      "name": "Rohan Gupta",
+      "photo": "https://example.com/user6.jpg"
+    },
+    "createdAt": "2025-01-09T18:10:00Z"
+  },
+  {
+    "title": "Hard Work Beats Luck",
+    "description": "Luck may open a door, but hard work is what keeps you inside the room.",
+    "category": "Career",
+    "emotionalTone": "Motivational",
+    "image": "",
+    "privacy": "public",
+    "accessLevel": "free",
+    "creator": {
+      "name": "Abdul Karim",
+      "photo": "https://example.com/user7.jpg"
+    },
+    "createdAt": "2025-01-10T11:55:00Z"
+  },
+  {
+    "title": "Be Kind Even When It’s Hard",
+    "description": "Kindness is a choice. The world becomes far more peaceful when you choose compassion.",
+    "category": "Relationships",
+    "emotionalTone": "Gratitude",
+    "image": "",
+    "privacy": "public",
+    "accessLevel": "free",
+    "creator": {
+      "name": "Liam Carter",
+      "photo": "https://example.com/user8.jpg"
+    },
+    "createdAt": "2025-01-11T13:40:00Z"
+  },
+  {
+    "title": "Your Past Doesn’t Define You",
+    "description": "Your past mistakes are lessons, not labels. What matters is the person you choose to become.",
+    "category": "Mistakes Learned",
+    "emotionalTone": "Realization",
+    "image": "",
+    "privacy": "private",
+    "accessLevel": "premium",
+    "creator": {
+      "name": "Nadia Hasan",
+      "photo": "https://example.com/user9.jpg"
+    },
+    "createdAt": "2025-01-12T08:20:00Z"
+  },
+  {
+    "title": "Trust the Timing of Life",
+    "description": "Not everything will happen when you want it. But when it happens at the right moment, it makes sense.",
+    "category": "Mindset",
+    "emotionalTone": "Motivational",
+    "image": "",
+    "privacy": "public",
+    "accessLevel": "free",
+    "creator": {
+      "name": "Sophia Rahman",
+      "photo": "https://example.com/user10.jpg"
+    },
+    "createdAt": "2025-01-13T17:05:00Z"
+  }
+]

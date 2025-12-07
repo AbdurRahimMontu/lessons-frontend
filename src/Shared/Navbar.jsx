@@ -2,18 +2,26 @@
 import Container from '../Components/Container';
 import { Link, NavLink } from 'react-router';
 import MyLink from '../Components/MyLink';
+import useAuth from '../Hooks/useAuth';
 
 
 const Navbar = () => {
    
+const {user, logOut} =useAuth();
 
-
+const handleLogOut=()=>{
+    logOut()
+    .then()
+    .catch(error=>{
+        console.log(error);
+    })
+}
     const links = <>
-         <li><MyLink>Home</MyLink></li>
-         <li><MyLink>Public Lessons</MyLink></li>
-         <li><MyLink>Add Lesson</MyLink></li>
-         <li><MyLink>My Lessons</MyLink></li>
-         <li><MyLink>Pricing</MyLink></li>
+         <li><MyLink to="/">Home</MyLink></li>
+         <li><MyLink to="/publicLessons">Public Lessons</MyLink></li>
+         <li><MyLink to="/dashboard/add-lesson" >Add Lesson</MyLink></li>
+         <li><MyLink to="/dashboard/my-lessons">My Lessons</MyLink></li>
+         <li><MyLink to="/pricing">Pricing</MyLink></li>
       
     </>
     return (
@@ -40,9 +48,9 @@ const Navbar = () => {
     </ul>
   </div>
   <div className="navbar-end space-x-5">
-       <MyLink to="/signup">Signup</MyLink>
-       <MyLink to="/login">Login</MyLink>
 
+{
+    user?(
   <div className="dropdown dropdown-end">
   <div tabIndex={0} role="button" className="m-1">
     <div className="avatar cursor-pointer">
@@ -55,10 +63,22 @@ const Navbar = () => {
   <ul tabIndex="-1" className="dropdown-content mt-3 menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
     <li><Link>My Profile</Link></li>
     <li><Link to="/dashboard">Dashboard</Link></li>
-    <li><button className='btn'>LogOut</button></li>
+    <li><button onClick={handleLogOut} className='btn'>LogOut</button></li>
    
   </ul>
 </div>
+    ):(
+         <div className='flex space-x-5'>
+        <MyLink to="/signup">Signup</MyLink>
+        <MyLink to="/login">Login</MyLink>
+         </div>
+    )
+}
+
+      
+
+{/* Logout */}
+
 
   </div>
 
