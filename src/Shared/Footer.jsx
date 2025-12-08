@@ -1,27 +1,18 @@
 import React from 'react';
 import Container from '../Components/Container';
-
+import { IoBook } from "react-icons/io5";
+import { Link } from 'react-router';
 const Footer = () => {
     return (
         <div className='bg-base-300'>
             <Container>
-                        <footer className="footer sm:footer-horizontal  text-base-content py-10">
-  <nav>
-    <h6 className="footer-title">Services</h6>
-    <a className="link link-hover">Branding</a>
-    <a className="link link-hover">Design</a>
-    <a className="link link-hover">Marketing</a>
-    <a className="link link-hover">Advertisement</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Company</h6>
-    <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Social</h6>
+<footer className="footer sm:footer-horizontal  text-base-content py-10">
+
+<div>
+  <h2>Company Name</h2>
+<IoBook size={40}/>
+<div>
+      <h6 className="footer-title">Social</h6>
     <div className="grid grid-flow-col gap-4">
       <a>
         <svg
@@ -57,6 +48,34 @@ const Footer = () => {
         </svg>
       </a>
     </div>
+</div>
+</div>
+  <nav>
+    <h6 className="footer-title">Services</h6>
+    <a className="link link-hover">Branding</a>
+    <a className="link link-hover">Design</a>
+    <a className="link link-hover">Marketing</a>
+    <a className="link link-hover">Advertisement</a>
+  </nav>
+  <nav>
+    <h6 className="footer-title">Company</h6>
+    <a className="link link-hover">About us</a>
+    <a className="link link-hover">Contact</a>
+    <a className="link link-hover">Jobs</a>
+    <Link to="/terms" className="hover:underline">
+                Terms & Conditions
+              </Link>
+  </nav>
+  <nav>
+    <div>
+          <h2 className="text-xl font-bold mb-3">Contact Info</h2>
+          <ul className="space-y-2  text-sm">
+            <p>📍 Address: Dhaka, Bangladesh</p>
+            <p>📞 Phone: +880 1234-567890</p>
+            <p>✉️ Email: support@example.com</p>
+          </ul>
+        </div>
+
   </nav>
             </footer>
             </Container>

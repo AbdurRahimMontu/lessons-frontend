@@ -14,6 +14,9 @@ import LessonDetails from "./../Pages/LessonDetails";
 import PricingPage from "./../Pages/PricingPage";
 import Profile from "../Pages/Profile";
 import Statistics from "../Components/Statistics/Statistics";
+import AuthorProfile from "../Components/AuthorProfile";
+import TermsCondition from "../Components/TermsCondition";
+import ErrorPage from "../Pages/ErrorPage";
 
 
 
@@ -39,9 +42,11 @@ const Routes = createBrowserRouter([
         path: "/pricing",
         Component: PricingPage,
       },
-    ],
-  },
-  {
+      {
+        path: "/authorLessons",
+        Component: AuthorProfile,
+      },
+      {
     path: "/signUp",
     Component: Signup,
   },
@@ -49,6 +54,13 @@ const Routes = createBrowserRouter([
     path: "/login",
     Component: Login,
   },
+  {
+    path: "/terms",
+    element:<TermsCondition></TermsCondition>,
+  },
+    ],
+  },
+  
   // {
   //   path: "/dashboard",
   //   Component: DashboardLayout,
@@ -116,7 +128,10 @@ const Routes = createBrowserRouter([
       { path: "my-favorites", element: <PrivateRoute><MyFavorites /></PrivateRoute> },
       { path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
     ],
-  },
+  },{
+    path:"*",
+    element:<ErrorPage></ErrorPage>
+  }
 
 
 ]);

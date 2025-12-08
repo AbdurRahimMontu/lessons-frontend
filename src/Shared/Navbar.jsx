@@ -3,7 +3,7 @@ import Container from '../Components/Container';
 import { Link, NavLink } from 'react-router';
 import MyLink from '../Components/MyLink';
 import useAuth from '../Hooks/useAuth';
-
+import { IoBook } from "react-icons/io5";
 
 const Navbar = () => {
    
@@ -50,7 +50,7 @@ const handleLogOut=()=>{
        {links}
       </ul>
     </div>
-    <Link to="/" className="text-xl cursor-pointer">Logo</Link>
+    <Link to="/" className="text-xl cursor-pointer"><IoBook size={36}/></Link>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
@@ -65,12 +65,13 @@ const handleLogOut=()=>{
   <div tabIndex={0} role="button" className="m-1">
     <div className="avatar cursor-pointer">
     <div className="w-12 h-12 rounded-full">
-      <img src="https://img.daisyui.com/images/profile/demo/batperson@192.webp" />
+      <img src={user.photoURL} />
     </div>
   </div>
 
   </div>
-  <ul tabIndex="-1" className="dropdown-content mt-3 menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+  <ul tabIndex="-1" className="dropdown-content mt-2 menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+    <h2 className='text-center text-xl font-bold py-2'>{user.displayName}</h2>
     <li><Link to="/dashboard/profile">My Profile</Link></li>
     <li><Link to="/dashboard">Dashboard</Link></li>
     <li><button onClick={handleLogOut} className='btn'>LogOut</button></li>
