@@ -3,9 +3,11 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAuth from './../Hooks/useAuth';
 import MyAnimation from './../Components/MyAnimation';
+import { saveOrUpdateUser } from "../Utils";
 
 const Signup = () => {
   const {createNewUser,setUser, googleSignIn} = useAuth();
+
   const navigate = useNavigate()
   const location = useLocation()
   const {
@@ -14,18 +16,52 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
-  const handleSignup = (data) => {
-    console.log(data);
-    createNewUser(data.email, data.password)
-    navigate(location.state || "/")
-  };
-  const handleGoogleSignIn = (data) => {
-   
-    googleSignIn()
-    const currentUser = data.user
-    setUser(currentUser)
-    navigate(location.state || "/")
-  };
+ const handleSignup = async (data) => {
+  try {
+    const { name, email, password } = data;
+
+    // Create Firebase user
+    const result = await createNewUser(email, password);
+    const user = result.user;
+
+    // Save user to DB
+    await saveOrUpdateUser({
+      name,
+      email,
+    });
+
+    // Update auth state
+    setUser(user);
+
+    // Redirect
+    navigate(location.state?.from || "/");
+  } catch (error) {
+    console.error("Signup Error:", error);
+    // You can show toast or error message here
+  }
+};
+
+  const handleGoogleSignIn = async () => {
+  try {
+    const result = await googleSignIn();
+    const user = result.user;
+
+    // Save user to database
+    await saveOrUpdateUser({
+      name: user.displayName,
+      email: user.email,
+    });
+
+    // Set user state
+    setUser(user);
+
+    // Redirect user
+    navigate(location.state?.from || "/");
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+  }
+};
+
 
   return (
 <div className="grid  items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">

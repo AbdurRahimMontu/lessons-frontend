@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import useAuth from "../Hooks/useAuth";
 import MyAnimation from "../Components/MyAnimation";
+import { saveOrUpdateUser } from "../Utils";
 
 const Login = () => {
   const {register,handleSubmit,formState: { errors }} = useForm();
@@ -10,21 +11,34 @@ const Login = () => {
   const location = useLocation()
   const { signInUser,setUser, googleSignIn } = useAuth();
   const handleLogin = (data) => {
-    signInUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+
+    
+       const {name,email} =data;
+         signInUser(data.email, data.password)
+         saveOrUpdateUser({name, email})
+          navigate(location.state || "/")
   };
-   const handleGoogleSignIn = (data) => {
-   
-    googleSignIn()
-    const currentUser = data.user
-    setUser(currentUser)
-    navigate(location.state || "/")
-  };
+ const handleGoogleSignIn = async () => {
+  try {
+    const result = await googleSignIn();
+    const user = result.user;
+
+    // Save user to database
+    await saveOrUpdateUser({
+      name: user.displayName,
+      email: user.email,
+    });
+
+    // Set user state directly from Google result
+    setUser(user);
+
+    // Redirect
+    navigate(location.state?.from || "/");
+  } catch (error) {
+    console.error("Google Sign-In Error:", error);
+  }
+};
+
 
   return (
     <div className="grid  items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">

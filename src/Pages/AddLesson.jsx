@@ -52,15 +52,15 @@ const AddLesson = () => {
 
   return (
     <div>
-      <Navbar />
 
-      <div className="flex justify-center pt-5">
+
+      <div className="flex justify-center border">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <form
             onSubmit={handleSubmit(handleCreateAddProduct)}
             className="card-body"
           >
-            <h2 className="text-2xl font-bold text-center pt-4">
+            <h2 className="text-xl font-bold text-center pt-2">
               Add New Lesson
             </h2>
 
@@ -140,7 +140,7 @@ const AddLesson = () => {
                 </select>
               </div>
 
-              <button className="btn btn-neutral mt-4">Add Lesson</button>
+              <button className="btn btn-neutral mt-2">Add Lesson</button>
             </fieldset>
           </form>
         </div>

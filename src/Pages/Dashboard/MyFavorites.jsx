@@ -6,21 +6,28 @@ const MyFavorites = () => {
   const [category, setCategory] = useState("");
   const [tone, setTone] = useState("");
 
+  const userEmail = "test@gmail.com";
+
+  // ✅ Load favorites from database
   useEffect(() => {
-    fetch("./lessonsData.json")
-    .then(res=>res.json())
-    .then(data=>setFavorites(data))
+    axios
+      .get(`http://localhost:3000/favorites/user?email=${userEmail}`)
+      .then((res) => setFavorites(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
-  // Derived data — NO effect needed
+  // 🔍 Filter data
   const filtered = favorites.filter((f) => {
     if (category && f.category !== category) return false;
     if (tone && f.emotionalTone !== tone) return false;
     return true;
   });
 
+  // ❌ Remove favorite
   const handleRemove = async (id) => {
-    await axios.delete(`favorites/${id}`);
+    await axios.delete(
+      `http://localhost:3000/favorites/${id}?email=${userEmail}`
+    );
     setFavorites((prev) => prev.filter((item) => item._id !== id));
   };
 
@@ -68,6 +75,7 @@ const MyFavorites = () => {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {filtered.length === 0 ? (
               <tr>
@@ -110,3 +118,5 @@ const MyFavorites = () => {
 };
 
 export default MyFavorites;
+
+

@@ -80,8 +80,6 @@ const {user} = useAuth()
 
   return (
     <div>
-      <Navbar />
-
       <div className="overflow-x-auto p-4">
         <h2 className="text-2xl font-semibold mb-4">
           My Lessons ({lessons.length})
@@ -90,7 +88,10 @@ const {user} = useAuth()
         <table className="table w-full">
           <thead>
             <tr className="bg-base-200">
-              <th>Lesson</th>
+
+              <th>SL.NO</th>
+              <th>Image</th>
+              <th>Lesson Title</th>
               <th>Category</th>
               <th>Tone</th>
               <th>Email</th>
@@ -102,27 +103,31 @@ const {user} = useAuth()
           </thead>
 
           <tbody>
-            {lessons.map(lesson => (
+            {lessons.map((lesson,index)=> (
               <tr key={lesson._id}>
                 
                 {/* LESSON INFO */}
+
+           <td>{index + 1}</td>
                 <td>
                   <div className="flex items-center gap-3">
-                    <div className="mask mask-squircle w-12 h-12">
-                      <img
-                        src={lesson.image || "https://via.placeholder.com/100"}
+                    <div>
+                      <img  className="w-8 h-8 rounded-full"
+                        src={lesson.image || "https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"}
                         alt="lesson"
                       />
                     </div>
-                    <div>
-                      <div className="font-bold">{lesson.title}</div>
-                      <div className="text-sm opacity-70">
-                        {lesson.shortDescription?.slice(0, 60)}...
-                      </div>
-                    </div>
+           
                   </div>
                 </td>
-
+                 <td>
+                           <div>
+                      <div className="font-bold">{lesson.title}</div>
+                      <div className="text-sm opacity-70">
+                        {lesson.shortDescription?.slice(0, 60)}
+                      </div>
+                    </div>
+                 </td>
                 <td>{lesson.category}</td>
                 <td>{lesson.emotionalTone}</td>
 
