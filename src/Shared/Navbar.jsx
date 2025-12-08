@@ -71,7 +71,7 @@ const handleLogOut=()=>{
 
   </div>
   <ul tabIndex="-1" className="dropdown-content mt-3 menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-    <li><Link>My Profile</Link></li>
+    <li><Link to="/dashboard/profile">My Profile</Link></li>
     <li><Link to="/dashboard">Dashboard</Link></li>
     <li><button onClick={handleLogOut} className='btn'>LogOut</button></li>
    
