@@ -16,6 +16,8 @@ const handleLogOut=()=>{
         console.log(error);
     })
 }
+
+
     const links = <>
          <li><MyLink to="/">Home</MyLink></li>
          <li><MyLink to="/publicLessons">Public Lessons</MyLink></li>

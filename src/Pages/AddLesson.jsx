@@ -21,6 +21,8 @@ const AddLesson = () => {
     data.email = user?.email;
     data.creatorName = user?.displayName;
     data.creatorPhoto = user?.photoURL;
+    data.readingTime= user?.readingTime;
+
 
     axiosSecure
       .post("/allLessons", data)
@@ -139,6 +141,9 @@ const AddLesson = () => {
                   <option value="premium">Premium</option>
                 </select>
               </div>
+              {/* saved */}
+              <input type="number" {...register("saved")} className="input" placeholder="Saved Count" />
+            
 
               <button className="btn btn-neutral mt-2">Add Lesson</button>
             </fieldset>
