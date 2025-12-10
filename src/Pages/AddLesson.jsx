@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Navbar from "./../Shared/Navbar";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
-import Swal from "sweetalert2";
-import useAuth from "../Hooks/useAuth"; // <-- Make sure this exists
+import useAuth from "../Hooks/useAuth";
+import LottieAnimation from "../Components/LottieAnimation";
+import { toast } from "react-toastify";
+
 
 const AddLesson = () => {
+  const [showAnimation, setShowAnimation] = useState(false);
+
   const { user } = useAuth(); // LOGGED-IN USER
   const axiosSecure = useAxiosSecure();
 
-  const isPremiumUser = true;
+  const isPremiumUser = false;
 
   const { register, handleSubmit, reset } = useForm();
 
@@ -28,27 +31,12 @@ const AddLesson = () => {
       .post("/allLessons", data)
       .then((res) => {
         console.log(res.data);
-
-        if (res.data.insertedId) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your lesson has been created",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-
-          reset();
-        }
+         toast.success("Add Lesson Successfully")
+  
+        reset();
       })
       .catch((error) => {
         console.error(error);
-
-        Swal.fire({
-          icon: "error",
-          title: "Something went wrong!",
-          text: "Unable to create lesson.",
-        });
       });
   };
 
@@ -56,7 +44,7 @@ const AddLesson = () => {
     <div>
 
 
-      <div className="flex justify-center border">
+      <div className="flex justify-center">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <form
             onSubmit={handleSubmit(handleCreateAddProduct)}
@@ -72,7 +60,7 @@ const AddLesson = () => {
               <input
                 type="text"
                 {...register("title", { required: true })}
-                className="input"
+                className="input  w-full"
                 placeholder="Lesson Title"
               />
 
@@ -80,7 +68,7 @@ const AddLesson = () => {
               <label className="label">Description</label>
               <textarea
                 {...register("description", { required: true })}
-                className="textarea textarea-bordered"
+                className="textarea  w-full textarea-bordered"
                 placeholder="Full Description / Story / Insight"
               ></textarea>
 
@@ -88,7 +76,7 @@ const AddLesson = () => {
               <label className="label">Category</label>
               <select
                 {...register("category", { required: true })}
-                className="select select-bordered"
+                className="select  w-full select-bordered"
               >
                 <option value="">Pick a Category</option>
                 <option>Personal Growth</option>
@@ -102,7 +90,7 @@ const AddLesson = () => {
               <label className="label">Emotional Tone</label>
               <select
                 {...register("emotionalTone", { required: true })}
-                className="select select-bordered"
+                className="select  w-full select-bordered"
               >
                 <option value="">Pick a Tone</option>
                 <option>Motivational</option>
@@ -115,7 +103,7 @@ const AddLesson = () => {
               <label className="label">Privacy</label>
               <select
                 {...register("privacy", { required: true })}
-                className="select select-bordered"
+                className="select  w-full select-bordered"
               >
                 <option value="">Privacy</option>
                 <option>Public</option>
@@ -134,7 +122,7 @@ const AddLesson = () => {
               >
                 <select
                   disabled={!isPremiumUser}
-                  className="select select-bordered"
+                  className="select  w-full select-bordered"
                   {...register("accessLevel")}
                 >
                   <option value="free">Free</option>
@@ -142,10 +130,18 @@ const AddLesson = () => {
                 </select>
               </div>
               {/* saved */}
-              <input type="number" {...register("saved")} className="input" placeholder="Saved Count" />
+              <input type="number" {...register("saved")} className="input w-full" placeholder="Saved Count" />
             
 
-              <button className="btn btn-neutral mt-2">Add Lesson</button>
+      <div className="w-full border">
+  <button className="btn btn-primary w-full" onClick={() => setShowAnimation(true)}>
+  Add Lesson
+  </button>
+
+  {showAnimation && <LottieAnimation onClose={() => setShowAnimation(false)} />}
+</div>
+
+               
             </fieldset>
           </form>
         </div>

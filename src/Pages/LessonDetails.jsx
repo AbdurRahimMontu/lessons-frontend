@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
-
 import {
   FacebookShareButton,
   WhatsappShareButton,
@@ -18,48 +17,73 @@ const LessonDetails = () => {
   const { user, loading } = useAuth();
   const { id } = useParams();
 
+  // States
   const [lesson, setLesson] = useState(null);
-  const [likes, setLikes] = useState(0);
-  const [favoriteCount, setFavoriteCount] = useState(0);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [similarLessons, setSimilarLessons] = useState([]);
   const [recommendedLessons, setRecommendedLessons] = useState([]);
-  const [authorInfo, setAuthorInfo] = useState({ totalLessons: 0 });
+  const [allLessons, setAllLessons] = useState([]);
+  const [authorCount, setAuthorCount] = useState(0);
 
+  const [likes] = useState(0);
+  const [favoriteCount] = useState(0);
   const [views] = useState(() => Math.floor(Math.random() * 10000));
-
-  const formatViews = (num) => (num >= 1000 ? (num / 1000).toFixed(1) + "K" : num);
-
   const shareUrl = window.location.href;
 
+  const formatViews = (num) =>
+    num >= 1000 ? (num / 1000).toFixed(1) + "K" : num;
+
   // ===========================
-  // LOAD LESSON + SIMILAR + RECOMMENDED + AUTHOR INFO
+  // FETCH LESSON + RELATED DATA
   // ===========================
   useEffect(() => {
-    fetch(`http://localhost:3000/allLessons/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
+    const loadLesson = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/allLessons/${id}`);
+        const data = await res.json();
         setLesson(data);
-
-        // Load Author lessons count
-        if (data?.email) {
-          fetch(`http://localhost:3000/lessons/creator/${data.email}`)
-            .then((res) => res.json())
-            .then((info) => setAuthorInfo(info));
-        }
 
         // Load similar lessons
         fetch(`http://localhost:3000/lessons/similar/${id}`)
-          .then((res) => res.json())
+          .then((r) => r.json())
           .then(setSimilarLessons);
 
         // Load recommended lessons
         fetch(`http://localhost:3000/lessons/recommended/${id}`)
-          .then((res) => res.json())
+          .then((r) => r.json())
           .then(setRecommendedLessons);
-      });
+      } catch (err) {
+        console.error("Error loading lesson:", err);
+      }
+    };
+
+    loadLesson();
   }, [id]);
+
+  // ===========================
+  // LOAD ALL LESSONS (FOR AUTHOR COUNT)
+  // ===========================
+  useEffect(() => {
+    fetch("http://localhost:3000/allLessons")
+      .then((res) => res.json())
+      .then((data) => setAllLessons(data.lessons || []));
+  }, []);
+
+  // ===========================
+  // GET AUTHOR LESSON COUNT
+  // ===========================
+  useEffect(() => {
+    if (!lesson?.creator?.name || allLessons.length === 0) return;
+
+    const count = allLessons.filter(
+      (item) =>
+        item.creator?.name?.toLowerCase() ===
+        lesson.creator?.name?.toLowerCase()
+    ).length;
+
+    setAuthorCount(count);
+  }, [allLessons, lesson]);
 
   // ===========================
   // LOAD COMMENTS
@@ -67,7 +91,7 @@ const LessonDetails = () => {
   useEffect(() => {
     fetch(`http://localhost:3000/comments/${id}`)
       .then((res) => res.json())
-      .then((data) => setComments(data));
+      .then(setComments);
   }, [id]);
 
   // ===========================
@@ -87,15 +111,13 @@ const LessonDetails = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(commentData),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        setComments((prev) => [
-          { ...commentData, createdAt: new Date() },
-          ...prev,
-        ]);
-        setNewComment("");
-      });
+    }).then(() => {
+      setComments((prev) => [
+        { ...commentData, createdAt: new Date() },
+        ...prev,
+      ]);
+      setNewComment("");
+    });
   };
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
@@ -136,16 +158,22 @@ const LessonDetails = () => {
           <p><span className="font-bold">Created:</span> {lesson.createdAt}</p>
         </div>
 
-        {/* BUTTONS */}
+        {/* Buttons */}
         <div className="flex flex-wrap items-center gap-3 pt-4 border-t">
           <button className="btn btn-outline">🔖 Favorite</button>
           <button className="btn btn-outline">❤️ Like</button>
           <button className="btn btn-outline btn-error">🚩 Report</button>
 
           <div className="flex gap-2 ml-3">
-            <FacebookShareButton url={shareUrl}><FacebookIcon size={32} round /></FacebookShareButton>
-            <WhatsappShareButton url={shareUrl}><WhatsappIcon size={32} round /></WhatsappShareButton>
-            <TwitterShareButton url={shareUrl}><TwitterIcon size={32} round /></TwitterShareButton>
+            <FacebookShareButton url={shareUrl}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <WhatsappShareButton url={shareUrl}>
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+            <TwitterShareButton url={shareUrl}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
           </div>
         </div>
       </div>
@@ -153,7 +181,7 @@ const LessonDetails = () => {
       <hr />
 
       {/* VIDEO + METADATA */}
-      <div className="flex flex-col md:flex-row md:space-x-6">
+      <div className="flex flex-col md:flex-row md:space-x-6 mt-6">
         <div className="w-full md:w-2/3">
           <video
             src={lesson.videoUrl}
@@ -183,15 +211,14 @@ const LessonDetails = () => {
             <p className="text-gray-500 text-sm">{lesson.creator?.email}</p>
 
             <p className="mt-1 text-sm text-gray-600">
-              <span className="font-bold">{authorInfo?.totalLessons || 0}</span>{" "}
-              lessons created
+              <span className="font-bold">{authorCount}</span> lessons created
             </p>
 
             <Link
-              to={`/authorLessons/${lesson.creator?.email}`}
+              to={`/authorLessons`}
               className="btn btn-sm btn-outline mt-3"
             >
-              View All Lessons by This Author
+              View All Lessons
             </Link>
           </div>
         </div>
@@ -218,7 +245,9 @@ const LessonDetails = () => {
         </button>
 
         <div className="space-y-4 mt-4">
-          {comments.length === 0 && <p className="text-gray-500">No comments yet.</p>}
+          {comments.length === 0 && (
+            <p className="text-gray-500">No comments yet.</p>
+          )}
 
           {comments.map((c, i) => (
             <div key={i} className="p-3 bg-gray-100 rounded-lg">
@@ -248,7 +277,7 @@ const LessonDetails = () => {
       <hr />
 
       {/* RECOMMENDED */}
-      <div className="mt-10">
+      <div className="mt-10 mb-10">
         <h2 className="text-xl font-bold mb-4">Recommended Lessons</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -263,4 +292,5 @@ const LessonDetails = () => {
 };
 
 export default LessonDetails;
+
 

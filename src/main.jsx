@@ -4,6 +4,8 @@ import "./index.css";
 import { RouterProvider } from "react-router";
 import Routes from "./Routes/Routes";
 import AuthProvider from "./Provider/AuthProvider";
+ import { ToastContainer } from 'react-toastify';
+ import "react-toastify/dist/ReactToastify.css";
 import {
 
   QueryClient,
@@ -16,6 +18,7 @@ createRoot(document.getElementById("root")).render(
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={Routes}></RouterProvider>
       </QueryClientProvider>
+         <ToastContainer />
     </AuthProvider>
   </StrictMode>
 );

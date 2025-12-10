@@ -1,88 +1,118 @@
-import React, { useEffect, useState } from 'react';
-import useAuth from '../../Hooks/useAuth';
+import React, { useEffect, useState } from "react";
+// import useAuth from "../../Hooks/useAuth";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const AdminStatistics = () => {
-    const [lessons, setLessons] = useState([]);
-   const [favoriteCount, setFavoriteCount] = useState(0);
-   const { user } = useAuth();  
-   useEffect(() => {
-     if (!user?.email) return;
-   
-     fetch(`http://localhost:3000/favorites/count/${user.email}`)
-       .then(res => res.json())
-       .then(data => setFavoriteCount(data.count))
-       .catch(err => console.error(err));
-   }, [user]);
-   
-     useEffect(() => {
-       fetch("http://localhost:3000/allLessons") 
-         .then(res => res.json())
-         .then(data => setLessons(data))
-         .catch(err => console.error(err));
-     }, []);
-    return (
-        <div>
-               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+  // const { user } = useAuth();
+  
+  // State for fetched data
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [lessons, setLessons] = useState([]);
+  // const [favoriteCount, setFavoriteCount] = useState(0);
+  // const [totalPublicLessons, setTotalPublicLessons] = useState(0);
 
-        <div className="p-6 bg-white shadow rounded-xl">
-          <h2 className="text-lg font-semibold">Total Lessons Created</h2>
-          <p className="text-3xl font-bold mt-2">{lessons.length}</p>
+
+console.log(lessons);
+ useEffect(() => {
+    fetch("http://localhost:3000/users") 
+      .then((res) => res.json())
+      .then((data) => setTotalUsers(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+
+  useEffect( ()=>{
+    fetch("http://localhost:3000/allLessons")
+    .then(res=>res.json())
+    .then(data=>setLessons(data))
+  },[])
+
+
+
+
+
+
+  // Fetch favorite count
+  // useEffect(() => {
+  //   if (!user?.email) return;
+
+  //   fetch(`http://localhost:3000/favorites/count/${user.email}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setFavoriteCount(data.count))
+  //     .catch((err) => console.error(err));
+  // }, [user]);
+
+ 
+
+  // Sample data for chart (can be replaced with damic data)
+
+  // const chartData = [
+  //   { name: "Jan", lessons: 40, users: 120 },
+  //   { name: "Feb", lessons: 50, users: 150 },
+  
+  // ];
+  
+  const chartData = [
+    { name: "Jan", lessons: 40, users: 120 },
+    { name: "Feb", lessons: 50, users: 150 },
+  
+  ];
+
+  return (
+    <div className="p-5 space-y-5">
+      {/* Statistics Cards */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
+          <p className="text-3xl font-bold mt-2">{totalUsers.length}</p>
+          <h2 className="text-md font-semibold">Total Users</h2>
         </div>
 
-        <div className="p-6 bg-white shadow rounded-xl">
-          <h2 className="text-lg font-semibold">Total Favorites Saved</h2>
-          <p className="text-3xl font-bold mt-2">{favoriteCount}</p>
+        <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
+          <p className="text-3xl font-bold mt-2">{lessons.totalLessons}</p>
+          <h2 className="text-md font-semibold">Total Public Lessons</h2>
         </div>
-
-        <div className="p-6 bg-white shadow rounded-xl">
-          <h2 className="text-lg font-semibold">Weekly Contributions</h2>
-          <p className="text-3xl font-bold mt-2">5</p>
+        <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
+          <p className="text-3xl font-bold mt-2">0</p>
+          <h2 className="text-md font-semibold">Total Reported Lessons</h2>
         </div>
-
-        <div className="p-6 bg-white shadow rounded-xl">
-          <h2 className="text-lg font-semibold">Monthly Reflections</h2>
-          <p className="text-3xl font-bold mt-2">18</p>
+        <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
+          <p className="text-3xl font-bold mt-2">0</p>
+          <h2 className="text-md font-semibold">Most Active Contributors</h2>
         </div>
-
+        <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
+          <p className="text-3xl font-bold mt-2">0</p>
+          <h2 className="text-md font-semibold">Today's New Lessons</h2>
+        </div>
       </div>
 
-      {/* Recently Added Lessons */}
-      <div className="bg-white shadow rounded-xl p-6">
-        <h2 className="text-xl font-semibold mb-4">Recently Added Lessons</h2>
-
-        <div className="space-y-3">
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">🌱 Personal Growth: How I Learned to Stay Calm</p>
-            <span className="text-sm text-gray-500">2 days ago</span>
-          </div>
-
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">💡 Mindset Shift: Stop Comparing Yourself</p>
-            <span className="text-sm text-gray-500">5 days ago</span>
-          </div>
-
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">🔥 Career: Importance of Showing Progress</p>
-            <span className="text-sm text-gray-500">1 week ago</span>
-          </div>
-        </div>
+      {/* Lesson/User Growth Chart */}
+      <div className="bg-white shadow p-5 rounded-lg mt-5 w-full max-w-4xl mx-auto">
+        <h2 className="text-lg font-semibold mb-3">Lesson Growth & User Growth</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={chartData}
+            margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="lessons" stroke="#008000" activeDot={{ r: 8 }}/>
+            <Line type="monotone" dataKey="users" direction={lessons.le} stroke="#660066" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
-
-      {/* Quick Shortcuts */}
-
-
-      {/* Mini Analytics Placeholder */}
-      <div className="bg-white shadow rounded-xl p-6">
-        <h2 className="text-xl font-semibold mb-4">
-          Analytics (Weekly or Monthly Contributions)
-        </h2>
-
-        <div className="h-40 bg-gray-100 rounded-lg flex items-center justify-center">
-          <span className="text-gray-500">[Chart Placeholder]</span>
-        </div>
-      </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default AdminStatistics;

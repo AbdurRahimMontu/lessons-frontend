@@ -12,11 +12,13 @@ import MyFavorites from "../Pages/Dashboard/MyFavorites";
 import PublicLessons from "../Pages/PublicLessons";
 import LessonDetails from "./../Pages/LessonDetails";
 import PricingPage from "./../Pages/PricingPage";
-import Profile from "../Pages/Profile";
+import Profile from "../Pages/UserProfile";
 import Statistics from "../Components/Statistics/Statistics";
 import AuthorProfile from "../Components/AuthorProfile";
 import TermsCondition from "../Components/TermsCondition";
 import ErrorPage from "../Pages/ErrorPage";
+import AdminProfile from "../Pages/Dashboard/AdminProfile";
+import UpdateLesson from "../Pages/UpdateLesson";
 
 
 
@@ -34,6 +36,7 @@ const Routes = createBrowserRouter([
         path: "/publicLessons",
         Component: PublicLessons,
       },
+
       {
         path: "/lessonsDetails/:id",
         Component: LessonDetails,
@@ -126,7 +129,12 @@ const Routes = createBrowserRouter([
       { path: "add-lesson", element: <PrivateRoute><AddLesson /></PrivateRoute> },
       { path: "my-lessons", element: <PrivateRoute> <MyLessons /></PrivateRoute> },
       { path: "my-favorites", element: <PrivateRoute><MyFavorites /></PrivateRoute> },
-      { path: "profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+      // { path: "user/profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+      {
+         path:"profile",
+         element:<PrivateRoute><AdminProfile></AdminProfile></PrivateRoute>
+      },
+      
     ],
   },{
     path:"*",
