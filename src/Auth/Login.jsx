@@ -25,8 +25,9 @@ const Login = () => {
 
     // Save user to database
     await saveOrUpdateUser({
-      name: user.displayName,
-      email: user.email,
+      name: user?.displayName,
+      photo: user?.phoURL,
+      email: user?.email,
     });
 
     // Set user state directly from Google result
@@ -41,9 +42,9 @@ const Login = () => {
 
 
   return (
-    <div className="grid  items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">
+    <div className="grid my-2 items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">
 
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center ">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <form onSubmit={handleSubmit(handleLogin)} className="card-body">
           <h1 className="text-3xl text-center font-bold">Login now!</h1>
@@ -99,7 +100,7 @@ const Login = () => {
         </form>
       </div>
     </div>
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center">
     <MyAnimation></MyAnimation>
   </div>
     </div>

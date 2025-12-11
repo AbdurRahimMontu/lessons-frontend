@@ -12,7 +12,7 @@ import MyFavorites from "../Pages/Dashboard/MyFavorites";
 import PublicLessons from "../Pages/PublicLessons";
 import LessonDetails from "./../Pages/LessonDetails";
 import PricingPage from "./../Pages/PricingPage";
-import Profile from "../Pages/UserProfile";
+// import Profile from "../Pages/UserProfile";
 import Statistics from "../Components/Statistics/Statistics";
 import AuthorProfile from "../Components/AuthorProfile";
 import TermsCondition from "../Components/TermsCondition";
@@ -144,6 +144,10 @@ const Routes = createBrowserRouter([
     },
       { path: "my-favorites", element: <PrivateRoute><MyFavorites /></PrivateRoute> },
       // { path: "user/profile", element: <PrivateRoute><Profile /></PrivateRoute> },
+      {
+         path:"profile",
+         element:<PrivateRoute><AdminProfile></AdminProfile></PrivateRoute>
+      },
       {
          path:"profile",
          element:<PrivateRoute><AdminProfile></AdminProfile></PrivateRoute>

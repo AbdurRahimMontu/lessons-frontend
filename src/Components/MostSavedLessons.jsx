@@ -53,7 +53,7 @@ const MostSavedLessons = () => {
               <h3 className="text-xl font-semibold mt-3">{item.title}</h3>
 
               {/* Description */}
-              <p class-sName="text-gray-600 text-sm mt-2">
+              <p className="text-gray-600 text-sm mt-2">
                 {item.description}
               </p>
 

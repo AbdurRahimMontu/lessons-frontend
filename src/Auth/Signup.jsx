@@ -66,9 +66,9 @@ const Signup = () => {
   return (
 <div className="grid  items-center max-w-3xl mx-auto md:grid-cols-2 grid-cols-1">
 
-      <div className="flex justify-center items-center min-h-screen">
-      <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <form onSubmit={handleSubmit(handleSignup)} className="card-body">
+      <div className="flex justify-center items-center ">
+      <div className="card my-1 bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <form onSubmit={handleSubmit(handleSignup)} className="card-body ">
           <h1 className="text-3xl text-center font-bold">Signup</h1>
           <fieldset className="fieldset">
             {/* Name */}
@@ -153,7 +153,7 @@ const Signup = () => {
         </form>
       </div>
     </div>
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center">
     <MyAnimation></MyAnimation>
   </div>
 </div>

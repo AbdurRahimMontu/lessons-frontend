@@ -1,6 +1,6 @@
 
 import Container from '../Components/Container';
-import { Link, NavLink } from 'react-router';
+import { Link} from 'react-router';
 import MyLink from '../Components/MyLink';
 import useAuth from '../Hooks/useAuth';
 import { IoBook } from "react-icons/io5";
@@ -8,10 +8,13 @@ import { IoBook } from "react-icons/io5";
 const Navbar = () => {
    
 const {user, logOut} =useAuth();
-
+console.log(user);
 const handleLogOut=()=>{
-    logOut()
-    .then()
+
+  logOut()
+    .then(() => {
+      console.log("User logged out!");
+    })
     .catch(error=>{
         console.log(error);
     })
@@ -23,19 +26,20 @@ const handleLogOut=()=>{
          <li><MyLink to="/publicLessons">Public Lessons</MyLink></li>
          <li><MyLink to="/dashboard/add-lesson" >Add Lesson</MyLink></li>
          <li><MyLink to="/dashboard/my-lessons">My Lessons</MyLink></li>
-       
+        </>
       
-
-{user && !user.isPremium && (
-    <li><MyLink to="/pricing">Pricing</MyLink></li>
+{user &&  (
+  <li><MyLink to="/pricing">Pricing</MyLink></li>
 )}
-
+      
 {user && user.isPremium && (
-  <span className="px-3 py-1 bg-yellow-300 text-black rounded-full text-sm ml-2">
-    ⭐ Premium
-  </span>
+  <li>
+    <span className="px-3 py-1 bg-yellow-300 text-black rounded-full text-sm ml-2">
+      ⭐ Premium
+    </span>
+  </li>
 )}
-    </>
+   
     return (
         <div className='bg-base-100 shadow-sm'>
 <Container>
@@ -66,14 +70,16 @@ const handleLogOut=()=>{
   <div className="dropdown dropdown-end">
   <div tabIndex={0} role="button" className="m-1">
     <div className="avatar cursor-pointer">
-    <div className="w-12 h-12 rounded-full">
-      <img src={user.photoURL} />
+    <div className="w-12 h-12 rounded-full border">
+      <img src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} alt="Photo" />
+
+    
     </div>
   </div>
 
   </div>
   <ul tabIndex="-1" className="dropdown-content mt-2 menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-    <h2 className='text-center text-xl font-bold py-2'>{user.displayName}</h2>
+    <h2 className='text-center text-xl font-bold py-2'>{user?.displayName}</h2>
     <li><Link to="/dashboard/profile">My Profile</Link></li>
     <li><Link to="/dashboard">Dashboard</Link></li>
     <li><button onClick={handleLogOut} className='btn'>LogOut</button></li>

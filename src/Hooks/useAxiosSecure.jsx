@@ -16,7 +16,7 @@ const useAxiosSecure =()=>{
     useEffect(()=>{
         // req interceptor 
 const requestInterceptor =  instance.interceptors.request.use((config)=>{
-         console.log(config)
+        
         const token = user.accessToken;
     
          if(token){
