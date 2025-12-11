@@ -19,6 +19,8 @@ import TermsCondition from "../Components/TermsCondition";
 import ErrorPage from "../Pages/ErrorPage";
 import AdminProfile from "../Pages/Dashboard/AdminProfile";
 import UpdateLesson from "../Pages/UpdateLesson";
+import PaymentSuccess from "../Components/PaymentSuccess";
+import PaymentCancel from "../Components/PaymentCancel";
 
 
 
@@ -56,6 +58,14 @@ const Routes = createBrowserRouter([
   {
     path: "/login",
     Component: Login,
+  },
+  {
+    path: "/payment-success",
+    Component: PaymentSuccess,
+  },
+  {
+    path: "/payment/cancel",
+    Component: PaymentCancel,
   },
   {
     path: "/terms",
@@ -128,6 +138,10 @@ const Routes = createBrowserRouter([
       { index: true, element: <Statistics /> },
       { path: "add-lesson", element: <PrivateRoute><AddLesson /></PrivateRoute> },
       { path: "my-lessons", element: <PrivateRoute> <MyLessons /></PrivateRoute> },
+      {
+      path: "my-lessons/update/:id",   
+       element: <UpdateLesson />
+    },
       { path: "my-favorites", element: <PrivateRoute><MyFavorites /></PrivateRoute> },
       // { path: "user/profile", element: <PrivateRoute><Profile /></PrivateRoute> },
       {

@@ -1,9 +1,13 @@
 import React from 'react';
+import { useParams } from 'react-router';
 
 const UpdateLesson = () => {
+    const { id } = useParams();
+    console.log(id);
+
     return (
         <div>
-            Update Lesson
+            Update Lesson: Page
         </div>
     );
 };

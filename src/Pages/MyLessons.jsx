@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
-import Navbar from "../Shared/Navbar";
+
 import useAuth from "../Hooks/useAuth";
 import Swal from "sweetalert2";
 

@@ -12,6 +12,7 @@ import {
 import useAuth from "../Hooks/useAuth";
 import LessonCard from "../Components/LessonCard";
 import MetaDataAdd from "../Components/MetaDataAdd";
+import { toast } from 'react-toastify';
 
 const LessonDetails = () => {
   const { user, loading } = useAuth();
@@ -120,11 +121,24 @@ const LessonDetails = () => {
     });
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!lesson) return <p className="text-center mt-10">Lesson not found!</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+
 
       {/* LESSON DETAILS */}
       <div className="card bg-base-100 shadow-md p-6">
@@ -162,7 +176,7 @@ const LessonDetails = () => {
         <div className="flex flex-wrap items-center gap-3 pt-4 border-t">
           <button className="btn btn-outline">🔖 Favorite</button>
           <button className="btn btn-outline">❤️ Like</button>
-          <button className="btn btn-outline btn-error">🚩 Report</button>
+          <button  className="btn btn-outline btn-error">🚩 Report</button>
 
           <div className="flex gap-2 ml-3">
             <FacebookShareButton url={shareUrl}>

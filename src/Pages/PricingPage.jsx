@@ -3,9 +3,27 @@ import { Link } from "react-router";
 
 const PricingPage = () => {
 
-  const handlePayment=()=>{
-     
+ const handlePayment = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/payment/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: "test@gmail.com", // বাস্তবে auth থেকে নেবে
+      }),
+    });
+
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url; // stripe redirect
+    }
+  } catch (error) {
+    console.log(error);
   }
+};
+
 
 
 
@@ -86,12 +104,16 @@ const PricingPage = () => {
 
       <div className="text-center my-10">
    
-          <Link onClick={handlePayment}
-            type="submit"
-            className="bg-blue-600 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:bg-blue-700 transition"
-          >
-            Upgrade to Premium — ৳1500
-          </Link>
+       <div className="text-center my-10">
+  <button
+    onClick={handlePayment}
+    className="bg-blue-600 text-white px-8 py-4 text-lg rounded-xl shadow-lg hover:bg-blue-700 transition"
+  >
+    Upgrade to Premium — ৳1500
+  </button>
+</div>
+
+
        
       </div>
     </div>
