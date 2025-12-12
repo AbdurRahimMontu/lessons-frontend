@@ -148,10 +148,10 @@ const Routes = createBrowserRouter([
          path:"profile",
          element:<PrivateRoute><AdminProfile></AdminProfile></PrivateRoute>
       },
-      {
-         path:"profile",
-         element:<PrivateRoute><AdminProfile></AdminProfile></PrivateRoute>
-      },
+      // {
+      //    path:"profile",
+      //    element:<PrivateRoute><AdminProfile></AdminProfile></PrivateRoute>
+      // },
       
     ],
   },{

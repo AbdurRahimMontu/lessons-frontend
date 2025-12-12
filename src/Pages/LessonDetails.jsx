@@ -210,32 +210,43 @@ const LessonDetails = () => {
       <hr />
 
       {/* AUTHOR CARD */}
-      <div className="mt-10 p-5 rounded-xl shadow-lg border bg-base-100">
-        <h2 className="text-xl font-bold mb-4">About the Author</h2>
+<div className="mt-10 p-5 rounded-xl shadow-lg border bg-base-100">
+       {/* AUTHOR / CREATOR SECTION */}
+<div className="mt-10 p-6 rounded-xl shadow-lg border bg-base-100">
+  <h2 className="text-xl font-bold mb-4">About the Author</h2>
 
-        <div className="flex items-center gap-5">
-          <img
-            src={lesson.creator?.photo || "/default-user.png"}
-            alt={lesson.creator?.name}
-            className="w-20 h-20 rounded-full border object-cover"
-          />
+  <div className="flex items-center gap-5">
 
-          <div>
-            <h3 className="text-lg font-semibold">{lesson.creator?.name}</h3>
-            <p className="text-gray-500 text-sm">{lesson.creator?.email}</p>
+    {/* Creator Profile Image */}
+    <img
+      src={lesson.creator?.photo || "/default-user.png"}
+      alt={lesson.creator?.name}
+      className="w-20 h-20 rounded-full border object-cover"
+    />
 
-            <p className="mt-1 text-sm text-gray-600">
-              <span className="font-bold">{authorCount}</span> lessons created
-            </p>
+    <div>
+      {/* Creator Name */}
+      <h3 className="text-lg font-semibold">{lesson.creator?.name}</h3>
 
-            <Link
-              to={`/authorLessons`}
-              className="btn btn-sm btn-outline mt-3"
-            >
-              View All Lessons
-            </Link>
-          </div>
-        </div>
+      {/* Creator Email */}
+      <p className="text-gray-500 text-sm">{lesson.creator?.email}</p>
+
+      {/* Total Lessons by Creator */}
+      <p className="mt-1 text-sm text-gray-600">
+        <span className="font-bold">{authorCount}</span> lessons created
+      </p>
+
+      {/* Redirect to author profile page */}
+      <Link
+        to="/dashboard/profile"
+        className="btn btn-sm btn-outline mt-3"
+      >
+        View all lessons by this author
+      </Link>
+    </div>
+  </div>
+</div>
+
       </div>
 
       {/* COMMENTS */}
