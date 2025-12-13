@@ -1,11 +1,9 @@
-import React from "react";
-import { Link } from "react-router";
 
 const PricingPage = () => {
 
  const handlePayment = async () => {
   try {
-    const res = await fetch("http://localhost:3000/payment/create-checkout-session", {
+    const res = await fetch("https://lessons-frontend.vercel.app/payment/create-checkout-session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

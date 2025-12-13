@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { Link } from "react-router";
-import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
-import useAuth from "../Hooks/useAuth";
 import Swal from "sweetalert2";
+import useAuth from "../Hooks/useAuth";
 
 const MyLessons = () => {
   const [lessons, setLessons] = useState([]);
@@ -12,7 +12,7 @@ const {user} = useAuth()
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/myLessons?email=${user.email}`)
+    fetch(`https://lessons-frontend.vercel.app/myLessons?email=${user.email}`)
       .then(res => res.json())
       .then(data => {
         console.log("Fetched lessons:", data);
@@ -23,7 +23,7 @@ const {user} = useAuth()
 
   // Update visibility
   const handleVisibilityChange = async (id, value) => {
-    await fetch(`http://localhost:3000/lessons/${id}`, {
+    await fetch(`https://lessons-frontend.vercel.app/lessons/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ privacy: value }),
@@ -36,7 +36,7 @@ const {user} = useAuth()
 
   // Update access level
   const handleAccessChange = async (id, value) => {
-    await fetch(`http://localhost:3000/lessons/${id}`, {
+    await fetch(`https://lessons-frontend.vercel.app/lessons/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ accessLevel: value }),
@@ -61,7 +61,7 @@ const {user} = useAuth()
   if (!confirmDelete.isConfirmed) return;
 
   // Delete from database
-  await fetch(`http://localhost:3000/lessons/${id}`, {
+  await fetch(`https://lessons-frontend.vercel.app/lessons/${id}`, {
     method: "DELETE",
   });
 

@@ -7,7 +7,7 @@ const FeaturedLifeLessons=()=>{
   const [lessons, setLessons] = useState([])
 
   useEffect(() => {
-    fetch("http://localhost:3000/featuredLessons")
+    fetch("https://lessons-frontend.vercel.app/featuredLessons")
       .then(res => res.json())
       .then(data => {
         setLessons(data);

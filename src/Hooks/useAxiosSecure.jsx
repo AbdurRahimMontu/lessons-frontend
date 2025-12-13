@@ -1,12 +1,12 @@
 
-import axios from "axios"
-import useAuth from "./useAuth"
+import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router';
+import useAuth from "./useAuth";
 
 
 const instance = axios.create({
-      baseURL : 'http://localhost:3000'
+      baseURL : 'https://lessons-frontend.vercel.app'
 })
 
 const useAxiosSecure =()=>{

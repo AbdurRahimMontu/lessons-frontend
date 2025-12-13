@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 const MyFavorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -11,7 +11,7 @@ const MyFavorites = () => {
   // ✅ Load favorites from database
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/favorites/user?email=${userEmail}`)
+      .get(`https://lessons-frontend.vercel.app/favorites/user?email=${userEmail}`)
       .then((res) => setFavorites(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -26,7 +26,7 @@ const MyFavorites = () => {
   // ❌ Remove favorite
   const handleRemove = async (id) => {
     await axios.delete(
-      `http://localhost:3000/favorites/${id}?email=${userEmail}`
+      `https://lessons-frontend.vercel.app/favorites/${id}?email=${userEmail}`
     );
     setFavorites((prev) => prev.filter((item) => item._id !== id));
   };

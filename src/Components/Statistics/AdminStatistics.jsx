@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import useAuth from "../../Hooks/useAuth";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
+    CartesianGrid,
+    Legend,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from "recharts";
 
 const AdminStatistics = () => {
@@ -23,7 +23,7 @@ const AdminStatistics = () => {
 
 console.log(lessons);
  useEffect(() => {
-    fetch("http://localhost:3000/users") 
+    fetch("https://lessons-frontend.vercel.app/users") 
       .then((res) => res.json())
       .then((data) => setTotalUsers(data))
       .catch((err) => console.error(err));
@@ -31,7 +31,7 @@ console.log(lessons);
 
 
   useEffect( ()=>{
-    fetch("http://localhost:3000/allLessons")
+    fetch("https://lessons-frontend.vercel.app/allLessons")
     .then(res=>res.json())
     .then(data=>setLessons(data))
   },[])
@@ -45,7 +45,7 @@ console.log(lessons);
   // useEffect(() => {
   //   if (!user?.email) return;
 
-  //   fetch(`http://localhost:3000/favorites/count/${user.email}`)
+  //   fetch(`https://lessons-frontend.vercel.app/favorites/count/${user.email}`)
   //     .then((res) => res.json())
   //     .then((data) => setFavoriteCount(data.count))
   //     .catch((err) => console.error(err));

@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import {
-  FacebookShareButton,
-  WhatsappShareButton,
-  TwitterShareButton,
-  FacebookIcon,
-  WhatsappIcon,
-  TwitterIcon,
+    FacebookIcon,
+    FacebookShareButton,
+    TwitterIcon,
+    TwitterShareButton,
+    WhatsappIcon,
+    WhatsappShareButton,
 } from "react-share";
 
-import useAuth from "../Hooks/useAuth";
 import LessonCard from "../Components/LessonCard";
 import MetaDataAdd from "../Components/MetaDataAdd";
-import { toast } from 'react-toastify';
+import useAuth from "../Hooks/useAuth";
 
 const LessonDetails = () => {
   const { user, loading } = useAuth();
@@ -41,17 +40,17 @@ const LessonDetails = () => {
   useEffect(() => {
     const loadLesson = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/allLessons/${id}`);
+        const res = await fetch(`https://lessons-frontend.vercel.app/allLessons/${id}`);
         const data = await res.json();
         setLesson(data);
 
         // Load similar lessons
-        fetch(`http://localhost:3000/lessons/similar/${id}`)
+        fetch(`https://lessons-frontend.vercel.app/lessons/similar/${id}`)
           .then((r) => r.json())
           .then(setSimilarLessons);
 
         // Load recommended lessons
-        fetch(`http://localhost:3000/lessons/recommended/${id}`)
+        fetch(`https://lessons-frontend.vercel.app/lessons/recommended/${id}`)
           .then((r) => r.json())
           .then(setRecommendedLessons);
       } catch (err) {
@@ -66,7 +65,7 @@ const LessonDetails = () => {
   // LOAD ALL LESSONS (FOR AUTHOR COUNT)
   // ===========================
   useEffect(() => {
-    fetch("http://localhost:3000/allLessons")
+    fetch("https://lessons-frontend.vercel.app/allLessons")
       .then((res) => res.json())
       .then((data) => setAllLessons(data.lessons || []));
   }, []);
@@ -90,7 +89,7 @@ const LessonDetails = () => {
   // LOAD COMMENTS
   // ===========================
   useEffect(() => {
-    fetch(`http://localhost:3000/comments/${id}`)
+    fetch(`https://lessons-frontend.vercel.app/comments/${id}`)
       .then((res) => res.json())
       .then(setComments);
   }, [id]);
@@ -108,7 +107,7 @@ const LessonDetails = () => {
       comment: newComment,
     };
 
-    fetch("http://localhost:3000/comments", {
+    fetch("https://lessons-frontend.vercel.app/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(commentData),

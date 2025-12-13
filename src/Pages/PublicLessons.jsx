@@ -1,8 +1,8 @@
 
 
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
+import { Link } from 'react-router';
 const PublicLessons = () => {
   const [lessons, setLessons] = useState([]);
   const [totalLessons, setTotalLessons] = useState(0);
@@ -16,7 +16,7 @@ const PublicLessons = () => {
   const limit = 8; 
 
   useEffect(() => {
-    fetch(`http://localhost:3000/allLessons?limit=${limit}&skip=${currentPage * limit}&sort=${sort}&order=${order}&search=${search}&category=${category}&tone=${tone}`)
+    fetch(`https://lessons-frontend.vercel.app/allLessons?limit=${limit}&skip=${currentPage * limit}&sort=${sort}&order=${order}&search=${search}&category=${category}&tone=${tone}`)
       .then(res => res.json())
       .then(data => {
         setLessons(data.lessons);             
