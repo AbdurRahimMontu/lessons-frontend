@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { FaCrown } from "react-icons/fa";
 
+
 const AdminProfile = () => {
   const { user, setUser } = useAuth();
   const [role] = useRole();
@@ -34,6 +35,7 @@ const AdminProfile = () => {
 
     reset(data); // update form UI
   };
+  
 
   return (
     <div>
@@ -70,7 +72,7 @@ const AdminProfile = () => {
           {/* USER EMAIL */}
           <h3 className="text-gray-600">{user?.email}</h3>
         </span>
-
+         <p>Number of lessons created</p>
         <hr className="my-3" />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">

@@ -1,7 +1,6 @@
 import React from 'react';
 import useRole from '../../Hooks/useRole';
 import AdminStatistics from './AdminStatistics';
-import AddLesson from '../../Pages/AddLesson';
 import CustomerStatistics from './CustomerStatistics';
 
 const Statistics = () => {
@@ -14,8 +13,9 @@ const Statistics = () => {
 
     return (
         <div>
- { role === 'admin' && (<AdminStatistics></AdminStatistics>)}
- { role === 'customer' && (<CustomerStatistics></CustomerStatistics>)}
+ { role === 'admin'? (<AdminStatistics></AdminStatistics>) :
+ (<CustomerStatistics></CustomerStatistics>)}
+
     
         </div>
     );

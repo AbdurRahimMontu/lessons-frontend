@@ -6,11 +6,11 @@ const CustomerStatistics = () => {
           <div>
    <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-4">
         <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
-          <p className="text-3xl font-bold mt-2">{}</p>
+          <p className="text-3xl font-bold mt-2">0</p>
           <h2 className="text-md font-semibold">Total lessons created</h2>
         </div>
         <div className="p-6 bg-white flex flex-col justify-center items-center shadow rounded-xl">
-          <p className="text-3xl font-bold mt-2">{}</p>
+          <p className="text-3xl font-bold mt-2">0</p>
           <h2 className="text-md font-semibold">Total saved (favorites)</h2>
         </div>
 

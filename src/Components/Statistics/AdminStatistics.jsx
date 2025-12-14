@@ -1,27 +1,18 @@
 import { useEffect, useState } from "react";
-// import useAuth from "../../Hooks/useAuth";
-import {
-    CartesianGrid,
-    Legend,
-    Line,
-    LineChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from "recharts";
+
+import { ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Scatter } from 'recharts';
+import useAuth from "../../Hooks/useAuth";
+
 
 const AdminStatistics = () => {
-  // const { user } = useAuth();
-  
+  const { user } = useAuth();
+ console.log(user);
   // State for fetched data
   const [totalUsers, setTotalUsers] = useState(0);
   const [lessons, setLessons] = useState([]);
   // const [favoriteCount, setFavoriteCount] = useState(0);
   // const [totalPublicLessons, setTotalPublicLessons] = useState(0);
 
-
-console.log(lessons);
  useEffect(() => {
     fetch("http://localhost:5000/users") 
       .then((res) => res.json())
@@ -31,7 +22,7 @@ console.log(lessons);
 
 
   useEffect( ()=>{
-    fetch("http://localhost:5000/allLessons")
+    fetch("http://localhost:5000/publicLessons")
     .then(res=>res.json())
     .then(data=>setLessons(data))
   },[])
@@ -53,19 +44,20 @@ console.log(lessons);
 
  
 
-  // Sample data for chart (can be replaced with damic data)
+ 
 
-  // const chartData = [
-  //   { name: "Jan", lessons: 40, users: 120 },
-  //   { name: "Feb", lessons: 50, users: 150 },
+
   
-  // ];
+// Sample data
+const data = [
+  { index: 1000, red: `${lessons.totalLessons}`, blue: `${totalUsers.length}` },
   
-  const chartData = [
-    { name: "Jan", lessons: 40, users: 120 },
-    { name: "Feb", lessons: 50, users: 150 },
-  
-  ];
+  // Calculation of line of best fit is not included in this demo
+  { index: 0, redLine: 0 },
+  { index: 1000, redLine: `${lessons.totalLessons}` },
+  { index: 0, blueLine: 0 },
+  { index: 1000, blueLine: `${totalUsers.length}`},
+];
 
   return (
     <div className="p-5 space-y-5">
@@ -97,19 +89,34 @@ console.log(lessons);
       {/* Lesson/User Growth Chart */}
       <div className="bg-white shadow p-5 rounded-lg mt-5 w-full max-w-4xl mx-auto">
         <h2 className="text-lg font-semibold mb-3">Lesson Growth & User Growth</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart
-            data={chartData}
-            margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="lessons" stroke="#008000" activeDot={{ r: 8 }}/>
-            <Line type="monotone" dataKey="users" direction={lessons.le} stroke="#660066" />
-          </LineChart>
-        </ResponsiveContainer>
+        {/* // chart */}
+      <div>
+    <ComposedChart
+      style={{ width: '100%', maxWidth: '700px', maxHeight: '50vh', aspectRatio: 1.618 }}
+      responsive
+      data={data}
+      margin={{
+        top: 20,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      }}>
+      <CartesianGrid stroke="#f5f5f5" />
+      <Tooltip />
+      <Legend />
+
+      <XAxis dataKey="index" type="number" label={{ value: '', position: 'insideBottomRight', offset: 0 }} />
+      <YAxis unit="" type="number" label={{ value: '', position: 'insideLeft' }} width="auto" />
+      <Scatter name="lesson" dataKey="red" fill="red" />
+      <Scatter name="user" dataKey="blue" fill="blue" />
+      <Line dataKey="blueLine" stroke="blue" dot={false} activeDot={false} legendType="none" />
+      <Line dataKey="redLine" stroke="red" dot={false} activeDot={false} legendType="none" />
+    </ComposedChart>
+
+
+        </div>
+        
+
       </div>
     </div>
   );

@@ -26,12 +26,16 @@ const LessonDetails = () => {
   const [recommendedLessons, setRecommendedLessons] = useState([]);
   const [allLessons, setAllLessons] = useState([]);
   const [authorCount, setAuthorCount] = useState(0);
-  const [likes] = useState(0);
-  const [favoriteCount] = useState(0);
+  const [likes, setLikes] = useState(Number(localStorage.getItem("likes")) || 0);
+  const [favorites, setFavorites] = useState(Number(localStorage.getItem("favorites")) || 0);
   const [views] = useState(() => Math.floor(Math.random() * 10000));
   const shareUrl = window.location.href;
   const [dataLesson, setDataLesson] =useState([])
   const formatViews = (num) =>
+    num >= 1000 ? (num / 1000).toFixed(1) + "K" : num;
+  const formatLikes = (num) =>
+    num >= 1000 ? (num / 1000).toFixed(1) + "K" : num;
+  const formatFavorites = (num) =>
     num >= 1000 ? (num / 1000).toFixed(1) + "K" : num;
 
   // ===========================
@@ -127,6 +131,21 @@ const data = allLessons.filter(
     });
   };
 
+
+const handleLike=()=>{
+ const updatedLikes = likes + 1;
+  setLikes(updatedLikes);
+  localStorage.setItem("likes", updatedLikes);
+}
+
+const handleFavorite=()=>{
+  const updatedFavorites = favorites + 1;
+  setFavorites(updatedFavorites);
+  localStorage.setItem("favorites", updatedFavorites);
+}
+
+
+
   if (loading) return <LoadingPage></LoadingPage>;
   if (!lesson) return <p className="text-center mt-10">Lesson not found!</p>;
 
@@ -139,14 +158,15 @@ const data = allLessons.filter(
 
         {/* STATS */}
         <div className="flex flex-wrap items-center gap-6 text-lg font-semibold mb-5">
+          {/* //like Count  */}
           <div className="flex items-center gap-2">
             <span className="text-red-500 text-xl">❤️</span>
-            <span>{likes.toLocaleString()} Likes</span>
+            <span><span>{formatLikes(likes)}</span>   Likes</span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-yellow-500 text-xl">🔖</span>
-            <span>{favoriteCount.toLocaleString()} Favorites</span>
+              <span><span>{formatFavorites(favorites)}</span>   Favorite</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -154,7 +174,7 @@ const data = allLessons.filter(
             <span>{formatViews(views)} Views</span>
           </div>
         </div>
-
+ {/* Number(localStorage.getItem("likes")) || 0 */}
         {/* INFO */}
         <div className="space-y-2 text-sm mb-6">
           <p>
@@ -177,9 +197,9 @@ const data = allLessons.filter(
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-wrap items-center gap-3 pt-4 border-t">
-          <button className="btn btn-outline">🔖 Favorite</button>
-          <button className="btn btn-outline">❤️ Like</button>
+        <div  className="flex flex-wrap items-center gap-3 pt-4 border-t">
+          <button onClick={handleFavorite}  className="btn btn-outline">🔖 Favorite</button>
+          <button onClick={handleLike} className="btn btn-outline">❤️ Like</button>
           <button className="btn btn-outline btn-error">🚩 Report</button>
 
           <div className="flex gap-2 ml-3">
