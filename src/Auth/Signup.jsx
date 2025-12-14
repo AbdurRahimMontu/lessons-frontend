@@ -34,7 +34,7 @@ const Signup = () => {
     setUser(user);
 
     // Redirect
-    navigate(location.state?.from || "/");
+    navigate(location.state || "/");
   } catch (error) {
     console.error("Signup Error:", error);
     // You can show toast or error message here
@@ -56,7 +56,7 @@ const Signup = () => {
     setUser(user);
 
     // Redirect user
-    navigate(location.state?.from || "/");
+    navigate(location.state || "/");
   } catch (error) {
     console.error("Google Sign-In Error:", error);
   }
