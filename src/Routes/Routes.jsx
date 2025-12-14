@@ -21,6 +21,8 @@ import AdminProfile from "../Pages/Dashboard/AdminProfile";
 import UpdateLesson from "../Pages/UpdateLesson";
 import PaymentSuccess from "../Components/PaymentSuccess";
 import PaymentCancel from "../Components/PaymentCancel";
+import AuthorCreatedLessons from "../Components/AuthorCreatedLessons";
+
 
 
 
@@ -67,10 +69,12 @@ const Routes = createBrowserRouter([
     path: "/payment/cancel",
     Component: PaymentCancel,
   },
-  {
-    path: "/terms",
-    element:<TermsCondition></TermsCondition>,
-  },
+{
+  path: "/authorCreatedLessons/:id",
+  element: <AuthorCreatedLessons />
+}
+
+      
     ],
   },
   
@@ -142,6 +146,8 @@ const Routes = createBrowserRouter([
       path: "my-lessons/update/:id",   
        element: <UpdateLesson />
     },
+
+
       { path: "my-favorites", element: <PrivateRoute><MyFavorites /></PrivateRoute> },
       // { path: "user/profile", element: <PrivateRoute><Profile /></PrivateRoute> },
       {

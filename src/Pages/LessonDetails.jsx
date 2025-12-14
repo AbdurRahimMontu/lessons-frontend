@@ -1,36 +1,36 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
-import {
-    FacebookIcon,
-    FacebookShareButton,
-    TwitterIcon,
-    TwitterShareButton,
-    WhatsappIcon,
-    WhatsappShareButton,
-} from "react-share";
-
 import LessonCard from "../Components/LessonCard";
 import MetaDataAdd from "../Components/MetaDataAdd";
 import useAuth from "../Hooks/useAuth";
+import LoadingPage from './../Components/LoadingPage';
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
+
 
 const LessonDetails = () => {
   const { user, loading } = useAuth();
   const { id } = useParams();
-
-  // States
   const [lesson, setLesson] = useState(null);
+
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [similarLessons, setSimilarLessons] = useState([]);
   const [recommendedLessons, setRecommendedLessons] = useState([]);
   const [allLessons, setAllLessons] = useState([]);
   const [authorCount, setAuthorCount] = useState(0);
-
   const [likes] = useState(0);
   const [favoriteCount] = useState(0);
   const [views] = useState(() => Math.floor(Math.random() * 10000));
   const shareUrl = window.location.href;
-
+  const [dataLesson, setDataLesson] =useState([])
   const formatViews = (num) =>
     num >= 1000 ? (num / 1000).toFixed(1) + "K" : num;
 
@@ -40,17 +40,18 @@ const LessonDetails = () => {
   useEffect(() => {
     const loadLesson = async () => {
       try {
-        const res = await fetch(`https://lessons-frontend.vercel.app/allLessons/${id}`);
+        // Load Details Lesson
+        const res = await fetch(`http://localhost:5000/publicLessons/${id}`);
         const data = await res.json();
         setLesson(data);
 
-        // Load similar lessons
-        fetch(`https://lessons-frontend.vercel.app/lessons/similar/${id}`)
+        // Load Similar Lessons
+        fetch(`http://localhost:5000/lessons/similar/${id}`)
           .then((r) => r.json())
           .then(setSimilarLessons);
 
-        // Load recommended lessons
-        fetch(`https://lessons-frontend.vercel.app/lessons/recommended/${id}`)
+        // Load Recommended lessons
+        fetch(`http://localhost:5000/lessons/recommended/${id}`)
           .then((r) => r.json())
           .then(setRecommendedLessons);
       } catch (err) {
@@ -64,11 +65,12 @@ const LessonDetails = () => {
   // ===========================
   // LOAD ALL LESSONS (FOR AUTHOR COUNT)
   // ===========================
-  useEffect(() => {
-    fetch("https://lessons-frontend.vercel.app/allLessons")
-      .then((res) => res.json())
-      .then((data) => setAllLessons(data.lessons || []));
-  }, []);
+useEffect(() => {
+  fetch("http://localhost:5000/publicLessons")
+    .then((res) => res.json())
+    .then((data) => setAllLessons(data.lessons || []))
+    .catch(console.error);
+}, []);
 
   // ===========================
   // GET AUTHOR LESSON COUNT
@@ -81,15 +83,20 @@ const LessonDetails = () => {
         item.creator?.name?.toLowerCase() ===
         lesson.creator?.name?.toLowerCase()
     ).length;
-
+const data = allLessons.filter(
+      (item) =>
+        item.creator?.name?.toLowerCase() ===
+        lesson.creator?.name?.toLowerCase()
+    )
+  setDataLesson(data);
     setAuthorCount(count);
   }, [allLessons, lesson]);
-
+  
   // ===========================
   // LOAD COMMENTS
   // ===========================
   useEffect(() => {
-    fetch(`https://lessons-frontend.vercel.app/comments/${id}`)
+    fetch(`http://localhost:5000/comments/${id}`)
       .then((res) => res.json())
       .then(setComments);
   }, [id]);
@@ -107,7 +114,7 @@ const LessonDetails = () => {
       comment: newComment,
     };
 
-    fetch("https://lessons-frontend.vercel.app/comments", {
+    fetch("http://localhost:5000/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(commentData),
@@ -120,25 +127,11 @@ const LessonDetails = () => {
     });
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <LoadingPage></LoadingPage>;
   if (!lesson) return <p className="text-center mt-10">Lesson not found!</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-
-
       {/* LESSON DETAILS */}
       <div className="card bg-base-100 shadow-md p-6">
         <h1 className="text-2xl font-bold mb-3">{lesson.title}</h1>
@@ -164,18 +157,30 @@ const LessonDetails = () => {
 
         {/* INFO */}
         <div className="space-y-2 text-sm mb-6">
-          <p><span className="font-bold">Category:</span> {lesson.category}</p>
-          <p><span className="font-bold">Emotional Tone:</span> {lesson.emotionalTone}</p>
-          <p><span className="font-bold">Creator:</span> {lesson.creator?.name}</p>
-          <p><span className="font-bold">Access Level:</span> {lesson.accessLevel}</p>
-          <p><span className="font-bold">Created:</span> {lesson.createdAt}</p>
+          <p>
+            <span className="font-bold">Category:</span> {lesson.category}
+          </p>
+          <p>
+            <span className="font-bold">Emotional Tone:</span>{" "}
+            {lesson.emotionalTone}
+          </p>
+          <p>
+            <span className="font-bold">Creator:</span> {lesson.creator?.name}
+          </p>
+          <p>
+            <span className="font-bold">Access Level:</span>{" "}
+            {lesson.accessLevel}
+          </p>
+          <p>
+            <span className="font-bold">Created:</span> {lesson.createdAt}
+          </p>
         </div>
 
         {/* Buttons */}
         <div className="flex flex-wrap items-center gap-3 pt-4 border-t">
           <button className="btn btn-outline">🔖 Favorite</button>
           <button className="btn btn-outline">❤️ Like</button>
-          <button  className="btn btn-outline btn-error">🚩 Report</button>
+          <button className="btn btn-outline btn-error">🚩 Report</button>
 
           <div className="flex gap-2 ml-3">
             <FacebookShareButton url={shareUrl}>
@@ -209,43 +214,50 @@ const LessonDetails = () => {
       <hr />
 
       {/* AUTHOR CARD */}
-<div className="mt-10 p-5 rounded-xl shadow-lg border bg-base-100">
-       {/* AUTHOR / CREATOR SECTION */}
-<div className="mt-10 p-6 rounded-xl shadow-lg border bg-base-100">
-  <h2 className="text-xl font-bold mb-4">About the Author</h2>
+      <div className="mt-10 p-5 rounded-xl shadow-lg border bg-base-100">
+   
+        <div className="mt-10 p-6 rounded-xl shadow-lg border bg-base-100">
+          <h2 className="text-xl font-bold mb-4">About the Author</h2>
 
-  <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5">
+            {/* Creator Profile Image */}
+            <img
+              src={lesson.creator?.photo || "/default-user.png"}
+              alt={lesson.creator?.name}
+              className="w-20 h-20 rounded-full border object-cover"
+            />
 
-    {/* Creator Profile Image */}
-    <img
-      src={lesson.creator?.photo || "/default-user.png"}
-      alt={lesson.creator?.name}
-      className="w-20 h-20 rounded-full border object-cover"
-    />
+            <div>
+              {/* Creator Name */}
+              <h3 className="text-lg font-semibold">{lesson.creator?.name}</h3>
 
-    <div>
-      {/* Creator Name */}
-      <h3 className="text-lg font-semibold">{lesson.creator?.name}</h3>
+              {/* Creator Email */}
+              <p className="text-gray-500 text-sm">{lesson.creator?.email}</p>
 
-      {/* Creator Email */}
-      <p className="text-gray-500 text-sm">{lesson.creator?.email}</p>
+              {/* Total Lessons by Creator */}
+              <p className="mt-1 text-sm text-gray-600">
+                <span className="font-bold">{authorCount}</span> lessons created
+              </p>
 
-      {/* Total Lessons by Creator */}
-      <p className="mt-1 text-sm text-gray-600">
-        <span className="font-bold">{authorCount}</span> lessons created
-      </p>
+              {/* Redirect to author profile page */}
 
-      {/* Redirect to author profile page */}
-      <Link
-        to="/dashboard/profile"
-        className="btn btn-sm btn-outline mt-3"
-      >
-        View all lessons by this author
-      </Link>
-    </div>
-  </div>
-</div>
+<Link to={`/authorCreatedLessons/${lesson._id}`}
 
+  className="btn btn-sm btn-outline mt-3"
+>
+  View all lessons by this author
+</Link>
+
+
+
+            </div>
+
+
+
+
+            
+          </div>
+        </div>
       </div>
 
       {/* COMMENTS */}
@@ -256,7 +268,9 @@ const LessonDetails = () => {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           className="textarea textarea-bordered w-full"
-          placeholder={user ? "Write your comment..." : "Login required to comment"}
+          placeholder={
+            user ? "Write your comment..." : "Login required to comment"
+          }
           disabled={!user}
         ></textarea>
 
@@ -288,15 +302,24 @@ const LessonDetails = () => {
       <hr />
 
       {/* SIMILAR */}
-      <div className="mt-10">
-        <h2 className="text-xl font-bold mb-4">Similar Lessons</h2>
+     <div className="mt-10">
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-xl font-bold">Similar Lessons</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {similarLessons.map((item) => (
-            <LessonCard key={item._id} item={item} />
-          ))}
-        </div>
-      </div>
+    <Link
+      to="/publicLessons"
+      className="btn btn-sm btn-outline"
+    >
+      View All
+    </Link>
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {similarLessons.map((item) => (
+      <LessonCard key={item._id} item={item} />
+    ))}
+  </div>
+</div>
 
       <hr />
 
@@ -310,11 +333,8 @@ const LessonDetails = () => {
           ))}
         </div>
       </div>
-
     </div>
   );
 };
 
 export default LessonDetails;
-
-

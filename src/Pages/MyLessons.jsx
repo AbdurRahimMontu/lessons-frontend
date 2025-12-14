@@ -12,7 +12,7 @@ const {user} = useAuth()
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`https://lessons-frontend.vercel.app/myLessons?email=${user.email}`)
+    fetch(`http://localhost:5000/myLessons?email=${user.email}`)
       .then(res => res.json())
       .then(data => {
         console.log("Fetched lessons:", data);
@@ -23,7 +23,7 @@ const {user} = useAuth()
 
   // Update visibility
   const handleVisibilityChange = async (id, value) => {
-    await fetch(`https://lessons-frontend.vercel.app/lessons/${id}`, {
+    await fetch(`http://localhost:5000/lessons/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ privacy: value }),
@@ -36,7 +36,7 @@ const {user} = useAuth()
 
   // Update access level
   const handleAccessChange = async (id, value) => {
-    await fetch(`https://lessons-frontend.vercel.app/lessons/${id}`, {
+    await fetch(`http://localhost:5000/lessons/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ accessLevel: value }),
@@ -61,7 +61,7 @@ const {user} = useAuth()
   if (!confirmDelete.isConfirmed) return;
 
   // Delete from database
-  await fetch(`https://lessons-frontend.vercel.app/lessons/${id}`, {
+  await fetch(`http://localhost:5000/lessons/${id}`, {
     method: "DELETE",
   });
 
@@ -92,6 +92,7 @@ const {user} = useAuth()
               <th>SL.NO</th>
               <th>Image</th>
               <th>Lesson Title</th>
+          
               <th>Category</th>
               <th>Tone</th>
               <th>Email</th>
@@ -104,8 +105,9 @@ const {user} = useAuth()
 
           <tbody>
             {lessons.map((lesson,index)=> (
+             
               <tr key={lesson._id}>
-                
+            
                 {/* LESSON INFO */}
 
            <td>{index + 1}</td>
@@ -123,6 +125,7 @@ const {user} = useAuth()
                  <td>
                            <div>
                       <div className="font-bold">{lesson.title}</div>
+                    
                       <div className="text-sm opacity-70">
                         {lesson.shortDescription?.slice(0, 60)}
                       </div>
