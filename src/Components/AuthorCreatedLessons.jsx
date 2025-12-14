@@ -1,6 +1,6 @@
-import { useParams } from "react-router";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 
 const AuthorCreatedLessons = () => {
   const { id } = useParams();   
@@ -12,7 +12,7 @@ const AuthorCreatedLessons = () => {
     if (!id) return;
 
     axios
-      .get(`http://localhost:5000/publicLessons/creator/${id}`)
+      .get(`https://lessons-backend.vercel.app/publicLessons/creator/${id}`)
       .then(res => {
         setLessons(res.data.lessons || []);
         setLoading(false);

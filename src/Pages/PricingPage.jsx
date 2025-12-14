@@ -3,7 +3,7 @@ const PricingPage = () => {
 
  const handlePayment = async () => {
   try {
-    const res = await fetch("http://localhost:5000/payment/create-checkout-session", {
+    const res = await fetch("https://lessons-backend.vercel.app/payment/create-checkout-session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
