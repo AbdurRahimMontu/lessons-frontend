@@ -21,7 +21,7 @@ const PublicLessons = () => {
     setLoading(true);
 
     fetch(
-      `https://lessons-backend.vercel.app/publicLessons?limit=${limit}&skip=${
+      `http://localhost:5000/publicLessons?limit=${limit}&skip=${
         currentPage * limit
       }&sort=${sort}&order=${order}&search=${search}&category=${category}&tone=${tone}`
     )

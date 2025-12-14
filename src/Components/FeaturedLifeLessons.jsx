@@ -9,7 +9,7 @@ const FeaturedLifeLessons = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch("https://lessons-backend.vercel.app/featuredLessons")
+    fetch("http://localhost:5000/featuredLessons")
       .then((res) => res.json())
       .then((data) => {
         setLessons(data || []);

@@ -23,7 +23,7 @@ const AdminStatistics = () => {
 
 console.log(lessons);
  useEffect(() => {
-    fetch("https://lessons-backend.vercel.app/users") 
+    fetch("http://localhost:5000/users") 
       .then((res) => res.json())
       .then((data) => setTotalUsers(data))
       .catch((err) => console.error(err));
@@ -31,7 +31,7 @@ console.log(lessons);
 
 
   useEffect( ()=>{
-    fetch("https://lessons-backend.vercel.app/allLessons")
+    fetch("http://localhost:5000/allLessons")
     .then(res=>res.json())
     .then(data=>setLessons(data))
   },[])
@@ -45,7 +45,7 @@ console.log(lessons);
   // useEffect(() => {
   //   if (!user?.email) return;
 
-  //   fetch(`https://lessons-backend.vercel.app/favorites/count/${user.email}`)
+  //   fetch(`http://localhost:5000/favorites/count/${user.email}`)
   //     .then((res) => res.json())
   //     .then((data) => setFavoriteCount(data.count))
   //     .catch((err) => console.error(err));

@@ -11,7 +11,7 @@ const MyFavorites = () => {
   // ✅ Load favorites from database
   useEffect(() => {
     axios
-      .get(`https://lessons-backend.vercel.app/favorites/user?email=${userEmail}`)
+      .get(`http://localhost:5000/favorites/user?email=${userEmail}`)
       .then((res) => setFavorites(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -26,7 +26,7 @@ const MyFavorites = () => {
   // ❌ Remove favorite
   const handleRemove = async (id) => {
     await axios.delete(
-      `https://lessons-backend.vercel.app/favorites/${id}?email=${userEmail}`
+      `http://localhost:5000/favorites/${id}?email=${userEmail}`
     );
     setFavorites((prev) => prev.filter((item) => item._id !== id));
   };
