@@ -12,6 +12,6 @@ export const saveOrUpdateUser = async(userData)=>{
 export const imageUpload = async imageData =>{
        const formData = new FormData();
        formData.append("image", imageData); 
-       const {data} = await axios.post(`${import.meta.env.VITE_url}`, formData);
+       const {data} = await axios.post(`${import.meta.env.VITE_API_URL}`, formData);
        return data?.data?.display_url;
       } 

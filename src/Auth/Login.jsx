@@ -2,13 +2,12 @@ import React from 'react';
 import { useForm } from "react-hook-form"
 import { Link, useLocation, useNavigate } from 'react-router';
 import { FcGoogle } from "react-icons/fc";
-import axios from 'axios';
 import useAuth from '../Hooks/useAuth';
 
 
 const Login = () => {
 const {register,handleSubmit,formState: { errors }} = useForm()
-const { signInUser, googleSignIn, updateUserProfile} =useAuth()
+const { signInUser, googleSignIn} =useAuth()
 const location = useLocation()
 const navigate = useNavigate()
 
