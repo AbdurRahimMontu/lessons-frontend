@@ -33,7 +33,7 @@ const AdminProfile = () => {
       position: "bottom-right",
     });
 
-    reset(data); // update form UI
+    reset(data); 
   };
   
 
@@ -54,7 +54,7 @@ const AdminProfile = () => {
           {/* ROLE BADGE */}
           <div className="pt-4">
             {role === "admin" ? (
-              <span className="flex items-center gap-1 ml-2 px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full shadow">
+              <span className="flex items-center gap-1 ml-2 px-3 py-1 text-xs font-semibold text-white bg-linear-to-r from-yellow-500 to-orange-500 rounded-full shadow">
                 <FaCrown size={12} /> Admin
               </span>
             ) : (

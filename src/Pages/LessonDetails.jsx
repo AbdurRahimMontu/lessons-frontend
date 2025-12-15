@@ -45,17 +45,17 @@ const LessonDetails = () => {
     const loadLesson = async () => {
       try {
         // Load Details Lesson
-        const res = await fetch(`http://localhost:5000/publicLessons/${id}`);
+        const res = await fetch(`https://lessons-backend.vercel.app/publicLessons/${id}`);
         const data = await res.json();
         setLesson(data);
 
         // Load Similar Lessons
-        fetch(`http://localhost:5000/lessons/similar/${id}`)
+        fetch(`https://lessons-backend.vercel.app/lessons/similar/${id}`)
           .then((r) => r.json())
           .then(setSimilarLessons);
 
         // Load Recommended lessons
-        fetch(`http://localhost:5000/lessons/recommended/${id}`)
+        fetch(`https://lessons-backend.vercel.app/lessons/recommended/${id}`)
           .then((r) => r.json())
           .then(setRecommendedLessons);
       } catch (err) {
@@ -70,7 +70,7 @@ const LessonDetails = () => {
   // LOAD ALL LESSONS (FOR AUTHOR COUNT)
   // ===========================
 useEffect(() => {
-  fetch("http://localhost:5000/publicLessons")
+  fetch("https://lessons-backend.vercel.app/publicLessons")
     .then((res) => res.json())
     .then((data) => setAllLessons(data.lessons || []))
     .catch(console.error);
@@ -100,7 +100,7 @@ const data = allLessons.filter(
   // LOAD COMMENTS
   // ===========================
   useEffect(() => {
-    fetch(`http://localhost:5000/comments/${id}`)
+    fetch(`https://lessons-backend.vercel.app/comments/${id}`)
       .then((res) => res.json())
       .then(setComments);
   }, [id]);
@@ -118,7 +118,7 @@ const data = allLessons.filter(
       comment: newComment,
     };
 
-    fetch("http://localhost:5000/comments", {
+    fetch("https://lessons-backend.vercel.app/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(commentData),

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Scatter } from 'recharts';
+import { CartesianGrid, ComposedChart, Legend, Line, Scatter, Tooltip, XAxis, YAxis } from 'recharts';
 import useAuth from "../../Hooks/useAuth";
 
 
@@ -14,7 +14,7 @@ const AdminStatistics = () => {
   // const [totalPublicLessons, setTotalPublicLessons] = useState(0);
 
  useEffect(() => {
-    fetch("http://localhost:5000/users") 
+    fetch("https://lessons-backend.vercel.app/users") 
       .then((res) => res.json())
       .then((data) => setTotalUsers(data))
       .catch((err) => console.error(err));
@@ -22,7 +22,7 @@ const AdminStatistics = () => {
 
 
   useEffect( ()=>{
-    fetch("http://localhost:5000/publicLessons")
+    fetch("https://lessons-backend.vercel.app/publicLessons")
     .then(res=>res.json())
     .then(data=>setLessons(data))
   },[])
@@ -36,7 +36,7 @@ const AdminStatistics = () => {
   // useEffect(() => {
   //   if (!user?.email) return;
 
-  //   fetch(`http://localhost:5000/favorites/count/${user.email}`)
+  //   fetch(`https://lessons-backend.vercel.app/favorites/count/${user.email}`)
   //     .then((res) => res.json())
   //     .then((data) => setFavoriteCount(data.count))
   //     .catch((err) => console.error(err));
